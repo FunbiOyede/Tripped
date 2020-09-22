@@ -1,0 +1,24 @@
+{
+  "name": "Tripped",
+  "version": "1.0.0",
+  "description": "An Api for managing  itineraries for holidays and vacations",
+  "main": "index.js",
+  "repository": "https://github.com/FunbiOyede/Tripped.git",
+  "author": "Oyede Oluwafunbi <oyedetobi49@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "celebrate": "^13.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "mongoose": "^5.10.6"
+  },
+  "scripts": {
+    "dev": "nodemon ."
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
