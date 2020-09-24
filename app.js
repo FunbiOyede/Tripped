@@ -2,8 +2,7 @@ const express = require("express"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
   http = require("http"),
-  UserModel = require("./data/model/User");
-const mongoose = require("mongoose"),
+  mongoose = require("mongoose"),
   { setupDB } = require("./data/connections/connectMongo");
 
 class App {
@@ -21,6 +20,7 @@ class App {
   }
 
   start() {
+    const server = http.createServer(this.app);
     setupDB();
     mongoose.connection
       .on("connecting", () => {
@@ -28,17 +28,31 @@ class App {
       })
       .on("connected", () => {
         console.log("Connected to MongoDB, starting API server..");
-        const server = http.createServer(this.app);
         server.listen(3000, () => {
           console.log(`server is running on port ${3000}`);
         });
       })
       .on("disconnected", () => {
-        console.log(`database is disconnecting, server will be closed`);
+        console.log(`database is disconnected, closing server`);
+        server.close();
       })
       .on("error", (error) => {
         console.log(`Database error ${error.message}`);
       });
+
+    const handleExit = (signal) => {
+      console.log(`Received ${signal}`);
+      console.log("closing the server");
+      server.close(() => {
+        console.log("closing database");
+        mongoose.connection.close(() => {
+          process.exit(0);
+        });
+      });
+    };
+    process.on("SIGINT", handleExit);
+    process.on("SIGQUIT", handleExit);
+    process.on("SIGTERM", handleExit);
   }
 }
 
