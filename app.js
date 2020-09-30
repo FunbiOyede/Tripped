@@ -4,6 +4,7 @@ const express = require("express"),
   http = require("http"),
   mongoose = require("mongoose"),
   { setupDB } = require("./data/connections/connectMongo");
+const config = require("./config/index");
 
 class App {
   constructor() {
@@ -28,7 +29,7 @@ class App {
       })
       .on("connected", () => {
         console.log("Connected to MongoDB, starting API server..");
-        server.listen(3000, () => {
+        server.listen(config.PORT, () => {
           console.log(`server is running on port ${3000}`);
         });
       })

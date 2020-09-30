@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-
+const config = require("../../config/index");
 const setupDB = () => {
-  return new mongoose.connect("mongodb://127.0.0.1:27017/Tripped", {
+  return new mongoose.connect(config.DB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
