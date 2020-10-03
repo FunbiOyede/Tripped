@@ -3,8 +3,11 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   http = require("http"),
   mongoose = require("mongoose"),
-  { setupDB } = require("./data/connections/connectMongo");
-const config = require("./config/index");
+  { setupDB } = require("./data/connections/connectMongo"),
+  config = require("./config/index"),
+  tripRouter = require("./api/routes/index"),
+  { handleError, NotFoundError } = require("./util/error"),
+  httpStatus = require("http-status-codes");
 
 class App {
   constructor() {
@@ -15,8 +18,15 @@ class App {
     this.app.use(cors());
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(tripRouter);
     this.app.get("/status", async (req, res) => {
-      res.status(200).json({ message: "Ready!, Up and running" });
+      res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
+    });
+    this.app.use((req, res, next) => {
+      next(new NotFoundError());
+    });
+    this.app.use((error, req, res, next) => {
+      handleError(error, res);
     });
   }
 

@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 
 const Trip = new mongoose.Schema({
-  Title: {
+  title: {
     type: String,
+    required: true,
   },
-  StartDate: { type: Date, required: true },
-  EndDate: { type: Date, required: true },
-  Description: { type: Date, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  location: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 module.exports = mongoose.model("Trip", Trip);
