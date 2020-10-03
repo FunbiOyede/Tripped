@@ -22,7 +22,10 @@ class NotFoundError extends Error {
 
 const handleError = (err, res) => {
   let { statusCode, message } = err;
-  if (!statusCode) statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+  if (!statusCode && !message) {
+    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+    message = "Internal server error";
+  }
   return res.status(statusCode).json({ status: "error", statusCode, message });
 };
 
