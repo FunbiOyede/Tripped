@@ -9,6 +9,7 @@ const Trip = new mongoose.Schema({
   endDate: { type: Date, required: true },
   location: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Trip", Trip);

@@ -5,7 +5,7 @@ const tripService = require("../services/trip.services"),
 class TripControllers extends BaseController {
   async createTrip(req, res, next) {
     try {
-      const trip = await tripService.create(req.body);
+      const trip = await tripService.createTrip(req.body);
       super.reply(
         res,
         httpStatus.CREATED,
@@ -13,9 +13,57 @@ class TripControllers extends BaseController {
         trip
       );
     } catch (error) {
-      console.log(error);
       error.statusCode = httpStatus.BAD_REQUEST;
       next(new BadRequestError(error));
+    }
+  }
+
+  async getTrips(req, res, next) {
+    try {
+      const result = await tripService.all();
+      super.reply(res, httpStatus.OK, "The list of trips", result);
+    } catch (error) {
+      error.statusCode = httpStatus.BAD_REQUEST;
+      next(new BadRequestError(error));
+    }
+  }
+
+  async getTrip(req, res, next) {
+    const { id } = req.params;
+    try {
+      const trip = await tripService.getTrip(id);
+      super.reply(res, httpStatus.OK, "The requested trip", trip);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateTrip(req, res, next) {
+    const { id } = req.params;
+    try {
+      const trip = await tripService.updateTrip(id, req.body);
+      super.reply(
+        res,
+        httpStatus.OK,
+        "The trip was successfully updated",
+        trip
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteTrip(req, res, next) {
+    const { id } = req.params;
+    try {
+      const trip = await tripService.deleteTrip(id);
+      super.reply(
+        res,
+        httpStatus.OK,
+        "The trip was successfully deleted",
+        trip
+      );
+    } catch (error) {
+      next(error);
     }
   }
 }

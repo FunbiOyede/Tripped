@@ -23,7 +23,7 @@ class App {
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
     this.app.use((req, res, next) => {
-      next(new NotFoundError());
+      next(new NotFoundError("Routes not Found"));
     });
     this.app.use((error, req, res, next) => {
       handleError(error, res);
