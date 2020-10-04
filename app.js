@@ -7,7 +7,8 @@ const express = require("express"),
   config = require("./config/index"),
   tripRouter = require("./api/routes/index"),
   { handleError, NotFoundError } = require("./util/error"),
-  httpStatus = require("http-status-codes");
+  httpStatus = require("http-status-codes"),
+  { errors } = require("celebrate");
 
 class App {
   constructor() {
@@ -22,6 +23,7 @@ class App {
     this.app.get("/status", async (req, res) => {
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
+    this.app.use(errors());
     this.app.use((req, res, next) => {
       next(new NotFoundError("Routes not Found"));
     });

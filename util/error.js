@@ -1,8 +1,10 @@
-const httpStatus = require("http-status-codes");
+const httpStatus = require("http-status-codes"),
+  { isCelebrateError } = require("celebrate");
 
 const ErrorType = {
   BAD_REQUEST: "BadRequestError",
   NOT_FOUND: "NotFoundError",
+  VALIDATOR: "ValidationError",
 };
 
 class BadRequestError extends Error {
@@ -24,6 +26,13 @@ class TripNotFoundError extends Error {
   constructor(message) {
     super(message);
     (this.type = ErrorType.NOT_FOUND), (this.statusCode = httpStatus.NOT_FOUND);
+  }
+}
+class ValidatorError extends Error {
+  constructor(message) {
+    super(message);
+    (this.type = ErrorType.VALIDATOR),
+      (this.statusCode = httpStatus.BAD_REQUEST);
   }
 }
 
@@ -54,4 +63,5 @@ module.exports = {
   BadRequestError,
   NotFoundError,
   TripNotFoundError,
+  ValidatorError,
 };
