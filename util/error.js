@@ -40,6 +40,7 @@ const handleError = (error, res) => {
   if (error.name == "CastError") {
     handleCastError(error, res);
   }
+
   error.statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
   error.status = error.status || "error";
   error.message = error.message || "Internal Server Error";

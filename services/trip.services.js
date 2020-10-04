@@ -1,8 +1,10 @@
 const tripRepository = require("../data/repository/trip.repository");
 const { TripNotFoundError, NotFoundError } = require("../util/error");
+const { calculateDateDifference } = require("../util/index");
 class TripServices {
   async createTrip(data) {
     try {
+      data.numberOfDays = calculateDateDifference(data.startDate, data.endDate);
       const trip = await tripRepository.create(data);
       return trip;
     } catch (error) {
