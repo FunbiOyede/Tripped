@@ -1,5 +1,5 @@
-const httpStatus = require("http-status-codes"),
-  { isCelebrateError } = require("celebrate");
+const httpStatus = require("http-status-codes");
+const { logger } = require("../util/logger");
 
 const ErrorType = {
   BAD_REQUEST: "BadRequestError",
@@ -37,6 +37,7 @@ class ValidatorError extends Error {
 }
 
 const handleError = (error, res) => {
+  logger.error(error.message, error.status, error);
   if (error.name == "CastError") {
     handleCastError(error, res);
   }

@@ -2,13 +2,17 @@ const express = require("express"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
   http = require("http"),
-  mongoose = require("mongoose"),
-  { setupDB } = require("./data/connections/connectMongo"),
-  config = require("./config/index"),
-  tripRouter = require("./api/routes/index"),
-  { handleError, NotFoundError } = require("./util/error"),
-  httpStatus = require("http-status-codes"),
-  { errors } = require("celebrate");
+  expressWinston = require("express-winston"),
+  { httpLogger } = require("./util/logger");
+(mongoose = require("mongoose")),
+  ({ setupDB } = require("./data/connections/connectMongo")),
+  (config = require("./config/index")),
+  (tripRouter = require("./api/routes/index")),
+  ({ handleError, NotFoundError } = require("./util/error")),
+  (httpStatus = require("http-status-codes")),
+  ({ errors } = require("celebrate")),
+  ({ logger } = require("./util/logger"));
+require("dotenv").config();
 
 class App {
   constructor() {
@@ -23,7 +27,9 @@ class App {
     this.app.get("/status", async (req, res) => {
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
+    this.app.use(expressWinston.logger(httpLogger()));
     this.app.use(errors());
+
     this.app.use((req, res, next) => {
       next(new NotFoundError("Routes not Found"));
     });
@@ -37,27 +43,28 @@ class App {
     setupDB();
     mongoose.connection
       .on("connecting", () => {
-        console.log("connecting to mongodb server");
+        logger.info("connecting to mongodb server");
       })
       .on("connected", () => {
-        console.log("Connected to MongoDB, starting API server..");
+        logger.info("Connected to MongoDB, starting API server..");
         server.listen(config.PORT, () => {
-          console.log(`server is running on port ${3000}`);
+          logger.info(process.env.NODE_ENV);
+          logger.info(`server is running on port ${3000}`);
         });
       })
       .on("disconnected", () => {
-        console.log(`database is disconnected, closing server`);
+        logger.info(`database is disconnected, closing server`);
         server.close();
       })
       .on("error", (error) => {
-        console.log(`Database error ${error.message}`);
+        logger.error(`Database error ${error.message}`);
       });
 
     const handleExit = (signal) => {
-      console.log(`Received ${signal}`);
-      console.log("closing the server");
+      logger.info(`Received ${signal}`);
+      logger.info("closing the server");
       server.close(() => {
-        console.log("closing database");
+        logger.info("closing database");
         mongoose.connection.close(() => {
           process.exit(0);
         });

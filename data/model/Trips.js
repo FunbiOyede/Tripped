@@ -13,11 +13,4 @@ const Trip = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-// Trip.pre("save", function (next) {
-//   if (!this.isModified("numberOfDays")) {
-//     return next();
-//   }
-//   this.numberOfDays = calculateDateDifference(this.endDate, this.startDate);
-//   next();
-// });
 module.exports = mongoose.model("Trip", Trip);
