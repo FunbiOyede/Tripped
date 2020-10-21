@@ -11,7 +11,8 @@ const express = require("express"),
   ({ handleError, NotFoundError } = require("./util/error")),
   (httpStatus = require("http-status-codes")),
   ({ errors } = require("celebrate")),
-  ({ logger } = require("./util/logger"));
+  ({ logger } = require("./util/logger")),
+  ({ connectRedis } = require("./data/connections/connectRedis"));
 require("dotenv").config();
 
 class App {
@@ -41,6 +42,7 @@ class App {
   start() {
     const server = http.createServer(this.app);
     setupDB();
+    connectRedis();
     mongoose.connection
       .on("connecting", () => {
         logger.info("connecting to mongodb server");
@@ -60,7 +62,7 @@ class App {
         logger.error(`Database error ${error.message}`);
       });
 
-    const handleExit = (signal) => {
+    const handleSuccessExit = (signal) => {
       logger.info(`Received ${signal}`);
       logger.info("closing the server");
       server.close(() => {
@@ -70,9 +72,23 @@ class App {
         });
       });
     };
-    process.on("SIGINT", handleExit);
-    process.on("SIGQUIT", handleExit);
-    process.on("SIGTERM", handleExit);
+
+    const handleFailureExit = (signal) => {
+      logger.info(`Received ${signal}`);
+      logger.info("closing the server");
+      server.close(() => {
+        logger.info("closing database");
+        mongoose.connection.close(() => {
+          process.exit(1);
+        });
+      });
+    };
+
+    process.on("SIGINT", handleSuccessExit);
+    process.on("SIGQUIT", handleSuccessExit);
+    process.on("SIGTERM", handleSuccessExit);
+    process.on("uncaughtException", handleFailureExit);
+    process.on("unhandledRejection", handleFailureExit);
   }
 }
 

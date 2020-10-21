@@ -1,6 +1,9 @@
 const tripRepository = require("../data/repository/trip.repository");
 const { TripNotFoundError, NotFoundError } = require("../util/error");
 const { calculateDateDifference } = require("../util/index");
+const promisify = require("util").promisify;
+const { client } = require("../data/connections/connectRedis");
+
 class TripServices {
   async createTrip(data) {
     try {
@@ -14,7 +17,14 @@ class TripServices {
 
   async all() {
     try {
-      return await tripRepository.all();
+      client.get = promisify(client.get);
+      const cachedTrips = await client.get("trip");
+      if (cachedTrips) {
+        return JSON.parse(cachedTrips);
+      }
+      const trips = await tripRepository.all();
+      client.set("trip", JSON.stringify(trips));
+      return trips;
     } catch (error) {
       throw error;
     }
