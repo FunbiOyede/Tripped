@@ -14,6 +14,7 @@ const express = require("express"),
   ({ logger } = require("./util/logger")),
   ({ connectRedis } = require("./data/connections/connectRedis"));
 require("dotenv").config();
+require("./data/repository/cache");
 
 class App {
   constructor() {

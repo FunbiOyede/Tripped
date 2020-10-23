@@ -17,13 +17,14 @@ class TripServices {
 
   async all() {
     try {
-      client.get = promisify(client.get);
-      const cachedTrips = await client.get("trip");
-      if (cachedTrips) {
-        return JSON.parse(cachedTrips);
-      }
-      const trips = await tripRepository.all();
-      client.set("trip", JSON.stringify(trips));
+      // client.get = promisify(client.get);
+      // const cachedTrips = await client.get("trip");
+      // if (cachedTrips) {
+      //   return JSON.parse(cachedTrips);
+      // }
+      // const trips = await tripRepository.all();
+      // client.set("trip", JSON.stringify(trips));
+      const trips = await tripRepository.allTrips();
       return trips;
     } catch (error) {
       throw error;
