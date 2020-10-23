@@ -2,13 +2,15 @@ const tripRepository = require("../data/repository/trip.repository");
 const { TripNotFoundError, NotFoundError } = require("../util/error");
 const { calculateDateDifference } = require("../util/index");
 const promisify = require("util").promisify;
-const { client } = require("../data/connections/connectRedis");
+const { clearCache } = require("../data/repository/cache");
 
 class TripServices {
   async createTrip(data) {
+    clearCache();
     try {
       data.numberOfDays = calculateDateDifference(data.startDate, data.endDate);
       const trip = await tripRepository.create(data);
+
       return trip;
     } catch (error) {
       throw error;

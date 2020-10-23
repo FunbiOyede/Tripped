@@ -9,7 +9,6 @@ mongoose.Query.prototype.cache = function () {
 };
 mongoose.Query.prototype.exec = async function () {
   if (!this.useCache) {
-    console.log("I AM NOT USING CACHE OVER HERE");
     return exec.apply(this, arguments);
   }
 
@@ -29,4 +28,10 @@ mongoose.Query.prototype.exec = async function () {
   const result = await exec.apply(this, arguments);
   client.set(key, JSON.stringify(result));
   return result;
+};
+
+module.exports = {
+  clearCache() {
+    client.flushall();
+  },
 };
