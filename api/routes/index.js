@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const tripController = require("../../controllers/trip.controllers");
 const { celebrate, Joi, Segments } = require("celebrate");
+const cacheMiddleware = require("../../middlewares/cacheMiddleware");
 
 router.post(
   "/trip",
@@ -16,6 +17,7 @@ router.post(
       }),
     }),
   ],
+  cacheMiddleware,
   tripController.createTrip
 );
 router.get("/trips", tripController.getTrips);

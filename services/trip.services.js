@@ -1,16 +1,12 @@
 const tripRepository = require("../data/repository/trip.repository");
 const { TripNotFoundError, NotFoundError } = require("../util/error");
 const { calculateDateDifference } = require("../util/index");
-const promisify = require("util").promisify;
-const { clearCache } = require("../data/repository/cache");
 
 class TripServices {
   async createTrip(data) {
-    clearCache();
     try {
       data.numberOfDays = calculateDateDifference(data.startDate, data.endDate);
       const trip = await tripRepository.create(data);
-
       return trip;
     } catch (error) {
       throw error;
@@ -19,13 +15,6 @@ class TripServices {
 
   async all() {
     try {
-      // client.get = promisify(client.get);
-      // const cachedTrips = await client.get("trip");
-      // if (cachedTrips) {
-      //   return JSON.parse(cachedTrips);
-      // }
-      // const trips = await tripRepository.all();
-      // client.set("trip", JSON.stringify(trips));
       const trips = await tripRepository.allTrips();
       return trips;
     } catch (error) {
