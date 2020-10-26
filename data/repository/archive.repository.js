@@ -11,7 +11,3 @@ class ArchiveRepository extends BaseRepository {
 }
 
 module.exports = new ArchiveRepository();
-
-//delete one and all  permantly
-//recover
-// deletes after 5 days done
