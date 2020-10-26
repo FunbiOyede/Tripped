@@ -3,6 +3,7 @@ const tripController = require("../../controllers/trip.controllers");
 const { celebrate, Joi, Segments } = require("celebrate");
 const cacheMiddleware = require("../../middlewares/cacheMiddleware");
 
+//create trips
 router.post(
   "/trip",
   [
@@ -22,6 +23,7 @@ router.post(
 );
 router.get("/trips", tripController.getTrips);
 router.get("/trip/:id", tripController.getTrip);
+//update trip
 router.post(
   "/trip/:id",
   [
@@ -35,8 +37,12 @@ router.post(
       }),
     }),
   ],
+  cacheMiddleware,
   tripController.updateTrip
 );
 router.delete("/trip/:id", tripController.deleteTrip);
+//restore deleted trip
+router.post("/trip/:id/restore", tripController.restoreDeletedTrip);
+router.get("/trips/archives", tripController.getArchivedTrips);
 
 module.exports = router;

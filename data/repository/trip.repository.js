@@ -8,8 +8,19 @@ class TripRepository extends BaseRepository {
   async allTrips() {
     try {
       return await this.model
-        .find()
+        .find({ deleted: false })
         .cache()
+        .sort({ createdAt: "ascending" })
+        .lean();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async allArchivedTrips() {
+    try {
+      return await this.model
+        .find({ deleted: true })
         .sort({ createdAt: "ascending" })
         .lean();
     } catch (error) {

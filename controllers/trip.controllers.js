@@ -28,6 +28,16 @@ class TripControllers extends BaseController {
     }
   }
 
+  async getArchivedTrips(req, res, next) {
+    try {
+      const result = await tripService.allArchives();
+      super.reply(res, httpStatus.OK, "The list of trips", result);
+    } catch (error) {
+      error.statusCode = httpStatus.BAD_REQUEST;
+      next(new BadRequestError(error));
+    }
+  }
+
   async getTrip(req, res, next) {
     const { id } = req.params;
     try {
@@ -60,6 +70,21 @@ class TripControllers extends BaseController {
         res,
         httpStatus.OK,
         "The trip was successfully deleted",
+        trip
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async restoreDeletedTrip(req, res, next) {
+    const { id } = req.params;
+    try {
+      const trip = await tripService.restoreTrip(id);
+      super.reply(
+        res,
+        httpStatus.OK,
+        "The trip was successfully restored",
         trip
       );
     } catch (error) {

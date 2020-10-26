@@ -39,6 +39,25 @@ class BaseRepository {
       throw error;
     }
   }
+  async archive(id) {
+    try {
+      const doc = await this.model.findById(id);
+      doc.deleted = true;
+      return doc.save();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async restore(id) {
+    try {
+      const doc = await this.model.findById(id);
+      doc.deleted = false;
+      return doc.save();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = BaseRepository;

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { calculateDateDifference } = require("../../util/index");
 const Trip = new mongoose.Schema({
   title: {
     type: String,
@@ -11,6 +10,11 @@ const Trip = new mongoose.Schema({
   numberOfDays: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
+  deleted: {
+    type: Boolean,
+    index: true,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Trip", Trip);

@@ -22,6 +22,15 @@ class TripServices {
     }
   }
 
+  async allArchives() {
+    try {
+      const trips = await tripRepository.allArchivedTrips();
+      return trips;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getTrip(id) {
     try {
       const trip = await tripRepository.getById(id);
@@ -46,7 +55,15 @@ class TripServices {
 
   async deleteTrip(id) {
     try {
-      const trip = await tripRepository.delete(id);
+      const trip = await tripRepository.archive(id);
+      return trip;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async restoreTrip(id) {
+    try {
+      const trip = await tripRepository.restore(id);
       return trip;
     } catch (error) {
       throw error;
