@@ -26,11 +26,11 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(tripRouter);
+    this.app.use(expressWinston.logger(httpLogger()));
+    this.app.use(errors());
     this.app.get("/status", async (req, res) => {
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
-    this.app.use(expressWinston.logger(httpLogger()));
-    this.app.use(errors());
 
     this.app.use((req, res, next) => {
       next(new NotFoundError("Routes not Found"));
