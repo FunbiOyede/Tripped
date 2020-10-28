@@ -77,5 +77,5 @@ router.post(
   budgetController.updateBudget
 );
 router.delete("/budget/:id", budgetController.deleteBudget);
-
+router.get("/weather", tripController.getWeather);
 module.exports = router;

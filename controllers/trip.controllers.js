@@ -2,6 +2,12 @@ const tripService = require("../services/trip.services"),
   httpStatus = require("http-status-codes"),
   { BadRequestError } = require("../util/error"),
   BaseController = require("./controller");
+const config = require("../config/index");
+const httpClient = require("../lib/http/httpClient");
+const api_client = new httpClient({
+  api_key: config.OPEN_WEATHER_API_KEY,
+  url: config.OPEN_WEATHER_URL,
+});
 class TripControllers extends BaseController {
   async createTrip(req, res, next) {
     try {
@@ -87,6 +93,16 @@ class TripControllers extends BaseController {
         "The trip was successfully restored",
         trip
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getWeather(req, res) {
+    try {
+      const { location } = req.query;
+      const result = await api_client.WeatherForecast({ q: location });
+      super.reply(res, httpStatus.OK, "The requested weather forecast", result);
     } catch (error) {
       next(error);
     }
