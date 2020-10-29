@@ -24,7 +24,7 @@ class TripControllers extends BaseController {
     }
   }
 
-  async getTrips(req, res, next) {
+  async allTrips(req, res, next) {
     try {
       const result = await tripService.all();
       super.reply(res, httpStatus.OK, "The list of trips", result);

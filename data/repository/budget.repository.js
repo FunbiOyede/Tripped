@@ -6,7 +6,10 @@ class BudgetRespository extends BaseRepository {
     super(budgetModel);
   }
   async findBudgetById(id) {
-    return await this.model.findById(id).populate("tripId").lean();
+    return await this.model.findById(id).populate("trip").lean();
+  }
+  async allBudgets() {
+    return await this.model.find().populate("trip").lean();
   }
 }
 

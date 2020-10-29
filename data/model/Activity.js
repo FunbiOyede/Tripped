@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
-const Budget = new mongoose.Schema({
-  amount: {
-    type: Number,
+
+const Activity = new mongoose.Schema({
+  place: {
+    type: String,
     required: true,
   },
-  currency: {
+  address: {
     type: String,
-    default: "₦",
   },
+  time: { type: String },
+  date: { type: String },
   trip: { type: mongoose.Schema.Types.ObjectId, ref: "Trip" },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Budget", Budget);
+module.exports = mongoose.model("Activity", Activity);

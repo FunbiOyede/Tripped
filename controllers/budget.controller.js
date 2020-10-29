@@ -56,6 +56,15 @@ class BudgetControllers extends BaseController {
       next(error);
     }
   }
+
+  async allBudgets(req, res, next) {
+    try {
+      const budgets = await budgetService.allBudgets();
+      super.reply(res, httpStatus.OK, "The list of budgets", budgets);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new BudgetControllers();

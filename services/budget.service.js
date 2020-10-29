@@ -31,6 +31,15 @@ class BudgetServices {
       throw error;
     }
   }
+
+  async allBudgets() {
+    try {
+      const budget = await budgetRespository.allBudgets();
+      return budget;
+    } catch (error) {
+      throw error;
+    }
+  }
   async deleteBudget(id) {
     try {
       const budget = await budgetRespository.delete(id);
