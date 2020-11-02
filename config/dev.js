@@ -6,4 +6,6 @@ module.exports = {
   REDIS_URL: process.env.REDIS_URL,
   OPEN_WEATHER_API_KEY: process.env.OPEN_WEATHER_API_KEY,
   OPEN_WEATHER_URL: process.env.OPEN_WEATHER_URL,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
 };
