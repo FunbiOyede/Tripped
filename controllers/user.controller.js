@@ -22,11 +22,14 @@ class UserController extends BaseController {
       const { name, email } = data;
       const user = await userService.createUser({ name, email });
       const accessToken = await jwt.generateAccessToken(user);
+      const refreshToken = await jwt.generateRefreshToken(user);
       super.reply(res, httpStatus.CREATED, "user successfully created", {
         user,
         accessToken,
+        refreshToken,
       });
     } catch (error) {
+      console.log(error);
       error.statusCode = httpStatus.BAD_REQUEST;
       next(new BadRequestError(error));
     }
@@ -34,6 +37,7 @@ class UserController extends BaseController {
 
   async getUser(req, res, next) {
     try {
+      console.log(req.user);
       const user = await userService.getUser(req.user.email);
       super.reply(res, httpStatus.OK, "The requested user", user);
     } catch (error) {

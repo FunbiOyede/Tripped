@@ -11,7 +11,8 @@ const api_client = new httpClient({
 class TripControllers extends BaseController {
   async createTrip(req, res, next) {
     try {
-      const trip = await tripService.createTrip(req.body);
+      const attr = { ...req.body, userId: req.user.userId };
+      const trip = await tripService.createTrip(attr);
       super.reply(
         res,
         httpStatus.CREATED,

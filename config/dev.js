@@ -9,4 +9,5 @@ module.exports = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
   ACCESS_TOKEN: process.env.ACCESS_TOKEN,
+  REFRESH_TOKEN: process.env.REFRESH_TOKEN,
 };

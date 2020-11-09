@@ -1,4 +1,4 @@
-const { models } = require("mongoose");
+const userRepository = require("../data/repository/user.repository");
 const jwt = require("../util/jwt");
 
 class Authorization {
@@ -15,8 +15,11 @@ class Authorization {
 
     try {
       const payload = await jwt.decyptTokens(token);
+      const { _id } = await userRepository.find({ email: payload.email });
+
       req.user = {
         email: payload.email,
+        userId: _id,
       };
       next();
     } catch (error) {

@@ -7,8 +7,7 @@ const acitivityController = require("../../controllers/activity.controller");
 const config = require("../../config/index");
 const { googleLoginUrl } = require("../../util/google");
 const userController = require("../../controllers/user.controller");
-const axios = require("axios");
-const fetch = require("node-fetch");
+
 const auth = require("../../middlewares/auth");
 //create trips
 router.post(
@@ -17,14 +16,13 @@ router.post(
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         title: Joi.string().required().min(3).max(30),
-
         startDate: Joi.string().required(),
         endDate: Joi.string().required(),
         location: Joi.string().required().min(5),
-        userId: Joi.string(),
       }),
     }),
   ],
+  auth.isAuthenticated,
   cacheMiddleware,
   tripController.createTrip
 );

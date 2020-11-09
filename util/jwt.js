@@ -5,22 +5,18 @@ class JWT {
   async generateAccessToken(payload) {
     const email = payload.email;
     const AccessToken = await sign({ email: email }, config.ACCESS_TOKEN, {
-      expiresIn: "15m",
+      expiresIn: "1d",
     });
 
     return AccessToken;
   }
-  //   async generateRefreshToken(payload) {
-  //     const email = payload.email;
-  //     const refreshToken = await sign(
-  //       { email: email },
-  //       process.env.REFRESH_TOKEN_SECRET,
-  //       {
-  //         expiresIn: "7d",
-  //       }
-  //     );
-  //     return refreshToken;
-  //   }
+  async generateRefreshToken(payload) {
+    const email = payload.email;
+    const refreshToken = await sign({ email: email }, config.REFRESH_TOKEN, {
+      expiresIn: "7d",
+    });
+    return refreshToken;
+  }
 
   async decyptTokens(token) {
     try {
