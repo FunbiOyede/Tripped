@@ -74,15 +74,8 @@ class App {
       });
     };
 
-    const handleFailureExit = (signal) => {
-      logger.info(`Received ${signal}`);
-      logger.info("closing the server");
-      server.close(() => {
-        logger.info("closing database");
-        mongoose.connection.close(() => {
-          process.exit(1);
-        });
-      });
+    const handleFailureExit = (error) => {
+      logger.info(`Received ${error}`);
     };
 
     process.on("SIGINT", handleSuccessExit);

@@ -49,6 +49,10 @@ class BaseRepository {
     }
   }
 
+  async find(query) {
+    const result = await this.model.findOne(query).lean();
+    return result;
+  }
   async restore(id) {
     try {
       const doc = await this.model.findById(id);

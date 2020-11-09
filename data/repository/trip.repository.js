@@ -5,11 +5,11 @@ class TripRepository extends BaseRepository {
     super(tripModel);
   }
 
-  async allTrips() {
+  async allTrips(userId) {
     try {
       return await this.model
         .find({ deleted: false })
-        .cache()
+        .cache({ key: userId })
         .sort({ createdAt: "ascending" })
         .lean();
     } catch (error) {

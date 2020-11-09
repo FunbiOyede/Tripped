@@ -1,5 +1,7 @@
 const queryString = require("query-string");
 const config = require("../config/index");
+const { GoogleAuthError } = require("../util/error");
+const axios = require("axios");
 const stringifiedParams = queryString.stringify({
   client_id: config.GOOGLE_CLIENT_ID,
   redirect_uri: "http://localhost:3000/auth/google/callback",
@@ -12,6 +14,7 @@ const stringifiedParams = queryString.stringify({
   prompt: "consent",
 });
 const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`;
+
 module.exports = {
   googleLoginUrl,
 };

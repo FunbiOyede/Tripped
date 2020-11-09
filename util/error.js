@@ -5,6 +5,7 @@ const ErrorType = {
   BAD_REQUEST: "BadRequestError",
   NOT_FOUND: "NotFoundError",
   VALIDATOR: "ValidationError",
+  UNAUTHENTICATED: "UNAUTHENTICATED",
 };
 
 class BadRequestError extends Error {
@@ -33,6 +34,14 @@ class ValidatorError extends Error {
     super(message);
     (this.type = ErrorType.VALIDATOR),
       (this.statusCode = httpStatus.BAD_REQUEST);
+  }
+}
+
+class GoogleAuthError extends Error {
+  constructor(message) {
+    super(message);
+    (this.type = ErrorType.UNAUTHENTICATED),
+      (this.statusCode = httpStatus.UNAUTHORIZED);
   }
 }
 
@@ -66,4 +75,5 @@ module.exports = {
   NotFoundError,
   TripNotFoundError,
   ValidatorError,
+  GoogleAuthError,
 };

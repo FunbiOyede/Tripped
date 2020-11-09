@@ -9,6 +9,7 @@ const { googleLoginUrl } = require("../../util/google");
 const userController = require("../../controllers/user.controller");
 const axios = require("axios");
 const fetch = require("node-fetch");
+const auth = require("../../middlewares/auth");
 //create trips
 router.post(
   "/trip",
@@ -146,5 +147,6 @@ router.delete("/activity/:id", acitivityController.deleteActivity);
 // });
 
 router.post("/google", userController.createUser);
+router.get("/user", auth.isAuthenticated, userController.getUser);
 
 module.exports = router;

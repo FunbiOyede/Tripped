@@ -3,8 +3,9 @@ const { client } = require("../connections/connectRedis");
 const util = require("util");
 client.get = util.promisify(client.get);
 const exec = mongoose.Query.prototype.exec;
-mongoose.Query.prototype.cache = function () {
+mongoose.Query.prototype.cache = function (option = {}) {
   this.useCache = true;
+  this.cacheKey = JSON.stringify(option.key) || "";
   return this;
 };
 mongoose.Query.prototype.exec = async function () {
@@ -17,6 +18,7 @@ mongoose.Query.prototype.exec = async function () {
       collectionName: this.mongooseCollection.name,
     })
   );
+  console.log("this is the key", this.cacheKey);
 
   const cachedValue = await client.get(key);
   if (cachedValue) {

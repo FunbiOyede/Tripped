@@ -9,6 +9,15 @@ class UserService {
       throw error;
     }
   }
+
+  async getUser(email) {
+    try {
+      const user = await userRepository.find({ email });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new UserService();

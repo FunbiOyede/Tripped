@@ -13,9 +13,9 @@ class TripServices {
     }
   }
 
-  async all() {
+  async all(userId) {
     try {
-      const trips = await tripRepository.allTrips();
+      const trips = await tripRepository.allTrips(userId);
       return trips;
     } catch (error) {
       throw error;

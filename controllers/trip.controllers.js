@@ -26,7 +26,8 @@ class TripControllers extends BaseController {
 
   async allTrips(req, res, next) {
     try {
-      const result = await tripService.all();
+      //fix this
+      const result = await tripService.all(req.user.id);
       super.reply(res, httpStatus.OK, "The list of trips", result);
     } catch (error) {
       error.statusCode = httpStatus.BAD_REQUEST;
