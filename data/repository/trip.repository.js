@@ -8,7 +8,7 @@ class TripRepository extends BaseRepository {
   async allTrips(userId) {
     try {
       return await this.model
-        .find({ deleted: false })
+        .find({ userId, deleted: false })
         .cache({ key: userId })
         .sort({ createdAt: "ascending" })
         .lean();
@@ -17,10 +17,10 @@ class TripRepository extends BaseRepository {
     }
   }
 
-  async allArchivedTrips() {
+  async allArchivedTrips(userId) {
     try {
       return await this.model
-        .find({ deleted: true })
+        .find({ userId, deleted: true })
         .sort({ createdAt: "ascending" })
         .lean();
     } catch (error) {

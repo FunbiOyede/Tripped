@@ -26,8 +26,8 @@ router.post(
   cacheMiddleware,
   tripController.createTrip
 );
-router.get("/trips", tripController.allTrips);
-router.get("/trip/:id", tripController.getTrip);
+router.get("/trips", auth.isAuthenticated, tripController.allTrips);
+router.get("/trip/:id", auth.isAuthenticated, tripController.getTrip);
 //update trip
 router.post(
   "/trip/:id",
@@ -42,13 +42,23 @@ router.post(
       }),
     }),
   ],
+  auth.isAuthenticated,
   cacheMiddleware,
   tripController.updateTrip
 );
-router.delete("/trip/:id", tripController.deleteTrip);
-//restore deleted trip
-router.post("/trip/:id/restore", tripController.restoreDeletedTrip);
-router.get("/trips/archives", tripController.getArchivedTrips);
+//archive trip
+router.delete("/trip/:id", auth.isAuthenticated, tripController.deleteTrip);
+//restore deleted/archived trip
+router.post(
+  "/trip/:id/restore",
+  auth.isAuthenticated,
+  tripController.restoreDeletedTrip
+);
+router.get(
+  "/trips/archives",
+  auth.isAuthenticated,
+  tripController.getArchivedTrips
+);
 
 ///////////////////////////////////////////////Budgets
 //create

@@ -22,9 +22,12 @@ class TripServices {
     }
   }
 
-  async allArchives() {
+  async allArchives(userId) {
     try {
-      const trips = await tripRepository.allArchivedTrips();
+      const trips = await tripRepository.allArchivedTrips(userId);
+      if (!trips || Array.isArray(trips)) {
+        throw new NotFoundError("No archived trips where found");
+      }
       return trips;
     } catch (error) {
       throw error;

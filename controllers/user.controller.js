@@ -37,7 +37,6 @@ class UserController extends BaseController {
 
   async getUser(req, res, next) {
     try {
-      console.log(req.user);
       const user = await userService.getUser(req.user.email);
       super.reply(res, httpStatus.OK, "The requested user", user);
     } catch (error) {

@@ -13,14 +13,13 @@ mongoose.Query.prototype.exec = async function () {
     return exec.apply(this, arguments);
   }
 
-  const key = JSON.stringify(
-    Object.assign({}, this.getQuery(), {
-      collectionName: this.mongooseCollection.name,
-    })
-  );
-  console.log("this is the key", this.cacheKey);
+  // const key = JSON.stringify(
+  //   Object.assign({}, this.getQuery(), {
+  //     collectionName: this.mongooseCollection.name,
+  //   })
+  // );
 
-  const cachedValue = await client.get(key);
+  const cachedValue = await client.get(this.cacheKey);
   if (cachedValue) {
     const doc = JSON.parse(cachedValue);
     return Array.isArray(doc)
@@ -28,12 +27,13 @@ mongoose.Query.prototype.exec = async function () {
       : new this.model(d);
   }
   const result = await exec.apply(this, arguments);
-  client.set(key, JSON.stringify(result));
+  //expires in two minutes
+  client.set(this.cacheKey, JSON.stringify(result), "EX", 120);
   return result;
 };
 
 module.exports = {
-  clearCache() {
-    client.flushall();
+  clearCache(cacheKey) {
+    client.del(JSON.stringify(cacheKey));
   },
 };

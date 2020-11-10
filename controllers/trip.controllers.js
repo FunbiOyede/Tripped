@@ -1,6 +1,6 @@
 const tripService = require("../services/trip.services"),
   httpStatus = require("http-status-codes"),
-  { BadRequestError } = require("../util/error"),
+  { BadRequestError, NotFoundError } = require("../util/error"),
   BaseController = require("./controller");
 const config = require("../config/index");
 const httpClient = require("../lib/http/httpClient");
@@ -27,8 +27,8 @@ class TripControllers extends BaseController {
 
   async allTrips(req, res, next) {
     try {
-      //fix this
-      const result = await tripService.all(req.user.id);
+      const { userId } = req.user;
+      const result = await tripService.all(userId);
       super.reply(res, httpStatus.OK, "The list of trips", result);
     } catch (error) {
       error.statusCode = httpStatus.BAD_REQUEST;
@@ -38,11 +38,12 @@ class TripControllers extends BaseController {
 
   async getArchivedTrips(req, res, next) {
     try {
-      const result = await tripService.allArchives();
+      const { userId } = req.user;
+      const result = await tripService.allArchives(userId);
       super.reply(res, httpStatus.OK, "The list of trips", result);
     } catch (error) {
-      error.statusCode = httpStatus.BAD_REQUEST;
-      next(new BadRequestError(error));
+      error.statusCode = httpStatus.NOT_FOUND;
+      next(new NotFoundError(error));
     }
   }
 
