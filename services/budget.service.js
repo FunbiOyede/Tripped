@@ -32,10 +32,11 @@ class BudgetServices {
     }
   }
 
-  async allBudgets() {
+  async allBudgets(userId) {
     try {
-      const budget = await budgetRespository.allBudgets();
-      return budget;
+      const budgets = await budgetRespository.allBudgets(userId);
+
+      return budgets;
     } catch (error) {
       throw error;
     }

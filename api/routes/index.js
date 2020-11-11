@@ -70,15 +70,15 @@ router.post(
         amount: Joi.number().required(),
         currency: Joi.string().required(),
         trip: Joi.string().required(),
-        userId: Joi.string().required(),
       }),
     }),
   ],
+  auth.isAuthenticated,
   budgetController.createBudget
 );
 
 //get a budget
-router.get("/budget/:id", budgetController.getBudget);
+router.get("/budget/:id", auth.isAuthenticated, budgetController.getBudget);
 //////////////update budget
 router.post(
   "/budget/:id",
@@ -90,11 +90,16 @@ router.post(
       }),
     }),
   ],
+  auth.isAuthenticated,
   budgetController.updateBudget
 );
-router.get("/budgets", budgetController.allBudgets);
+router.get("/budgets", auth.isAuthenticated, budgetController.allBudgets);
 //delete a budget
-router.delete("/budget/:id", budgetController.deleteBudget);
+router.delete(
+  "/budget/:id",
+  auth.isAuthenticated,
+  budgetController.deleteBudget
+);
 router.get("/weather", tripController.getWeather);
 
 ////////////////////////acitivities

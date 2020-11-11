@@ -6,7 +6,8 @@ const budgetService = require("../services/budget.service"),
 class BudgetControllers extends BaseController {
   async createBudget(req, res, next) {
     try {
-      const budget = await budgetService.createBudget(req.body);
+      const attr = { ...req.body, userId: req.user.userId };
+      const budget = await budgetService.createBudget(attr);
       super.reply(
         res,
         httpStatus.CREATED,
@@ -59,7 +60,8 @@ class BudgetControllers extends BaseController {
 
   async allBudgets(req, res, next) {
     try {
-      const budgets = await budgetService.allBudgets();
+      const { userId } = req.user;
+      const budgets = await budgetService.allBudgets(userId);
       super.reply(res, httpStatus.OK, "The list of budgets", budgets);
     } catch (error) {
       next(error);

@@ -8,8 +8,8 @@ class BudgetRespository extends BaseRepository {
   async findBudgetById(id) {
     return await this.model.findById(id).populate("trip").lean();
   }
-  async allBudgets() {
-    return await this.model.find().populate("trip").lean();
+  async allBudgets(userId) {
+    return await this.model.find({ userId }).populate("trip").lean();
   }
 }
 
