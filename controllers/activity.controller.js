@@ -5,7 +5,8 @@ const httpStatus = require("http-status-codes"),
 class ActivityController extends BaseController {
   async createActivity(req, res, next) {
     try {
-      const activity = await activityServices.createActivity(req.body);
+      const attr = { ...req.body, userId: req.user.userId };
+      const activity = await activityServices.createActivity(attr);
       super.reply(
         res,
         httpStatus.CREATED,
@@ -18,7 +19,7 @@ class ActivityController extends BaseController {
   }
   async updateActivity(req, res, next) {
     const { id } = req.params;
-
+    console.log(req.user);
     try {
       const activity = await activityServices.updateActivity(id, req.body);
       super.reply(
@@ -57,7 +58,8 @@ class ActivityController extends BaseController {
   }
   async getAllActivities(req, res, next) {
     try {
-      const activities = await activityServices.getAllActivities();
+      const { userId } = req.user;
+      const activities = await activityServices.getAllActivities(userId);
       super.reply(res, httpStatus.OK, "The list of activities", activities);
     } catch (error) {
       next(error);

@@ -8,8 +8,11 @@ class ActivityRepository extends BaseRepository {
   async findActivityById(id) {
     return await this.model.findById(id).populate("trip").lean();
   }
-  async AllActivities() {
-    return await this.model.find().populate("trip").lean();
+  async AllActivities(userId) {
+    return await this.model.find({ userId }).populate("trip").lean();
+  }
+  async deleteActivity(id, userId) {
+    return await this.model.findByIdAndRemove({ id, userId }).lean();
   }
 }
 

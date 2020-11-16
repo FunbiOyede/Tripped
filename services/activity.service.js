@@ -14,15 +14,21 @@ class AcitivityService {
   async updateActivity(id, data) {
     try {
       const activity = await activityRepository.update(id, data);
+      if (!activity) {
+        throw new NotFoundError("The specified activity was not found");
+      }
       return activity;
     } catch (error) {
       throw error;
     }
   }
 
-  async getAllActivities() {
+  async getAllActivities(userId) {
     try {
-      const activities = await activityRepository.AllActivities();
+      const activities = await activityRepository.AllActivities(userId);
+      if (activities.length === 0) {
+        throw new NotFoundError("No activities where found");
+      }
       return activities;
     } catch (error) {
       throw error;
@@ -44,6 +50,9 @@ class AcitivityService {
   async deleteActivity(id) {
     try {
       const activity = await activityRepository.delete(id);
+      if (!activity) {
+        throw new NotFoundError("The specified activity does not exits");
+      }
       return activity;
     } catch (error) {
       throw error;

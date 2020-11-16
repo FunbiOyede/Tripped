@@ -4,7 +4,6 @@ const userService = require("../services/user.service"),
   { BadRequestError } = require("../util/error");
 const jwt = require("../util/jwt");
 const axios = require("axios");
-const { config } = require("winston");
 
 class UserController extends BaseController {
   async createUser(req, res, next) {

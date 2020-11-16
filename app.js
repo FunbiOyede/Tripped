@@ -1,15 +1,18 @@
 const express = require("express"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
-  http = require("http"),
-  expressWinston = require("express-winston"),
-  { httpLogger } = require("./util/logger");
-(mongoose = require("mongoose")),
+  router = require("./api/routes/index");
+httpStatus = require("http-status-codes");
+(http = require("http")),
+  (expressWinston = require("express-winston")),
+  ({ httpLogger } = require("./util/logger")),
+  (activityRouter = require("./api/routes/activity.route")),
+  (budgetRouter = require("./api/routes/budget.route")),
+  (mongoose = require("mongoose")),
   ({ setupDB } = require("./data/connections/connectMongo")),
   (config = require("./config/index")),
-  (tripRouter = require("./api/routes/index")),
+  (tripRouter = require("./api/routes/trip.route")),
   ({ handleError, NotFoundError } = require("./util/error")),
-  (httpStatus = require("http-status-codes")),
   ({ errors } = require("celebrate")),
   ({ logger } = require("./util/logger")),
   ({ connectRedis } = require("./data/connections/connectRedis"));
@@ -25,7 +28,11 @@ class App {
     this.app.use(cors());
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(router);
     this.app.use(tripRouter);
+
+    this.app.use(budgetRouter);
+    this.app.use(activityRouter);
     this.app.use(expressWinston.logger(httpLogger()));
     this.app.use(errors());
     this.app.get("/status", async (req, res) => {

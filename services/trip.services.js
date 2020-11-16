@@ -25,7 +25,7 @@ class TripServices {
   async allArchives(userId) {
     try {
       const trips = await tripRepository.allArchivedTrips(userId);
-      if (!trips || Array.isArray(trips)) {
+      if (trips.length === 0) {
         throw new NotFoundError("No archived trips where found");
       }
       return trips;

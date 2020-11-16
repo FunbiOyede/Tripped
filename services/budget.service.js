@@ -35,7 +35,9 @@ class BudgetServices {
   async allBudgets(userId) {
     try {
       const budgets = await budgetRespository.allBudgets(userId);
-
+      if (budgets.length === 0) {
+        throw new NotFoundError("No budgets where found");
+      }
       return budgets;
     } catch (error) {
       throw error;
