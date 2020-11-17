@@ -14,7 +14,7 @@ class Authorization {
     }
 
     try {
-      const payload = await jwt.decyptTokens(token);
+      const payload = await jwt.decyptTokens(token, "access");
       const { _id } = await userRepository.find({ email: payload.email });
 
       req.user = {

@@ -16,6 +16,9 @@ class TripServices {
   async all(userId) {
     try {
       const trips = await tripRepository.allTrips(userId);
+      if (trips.length === 0) {
+        throw new NotFoundError("No trips where found");
+      }
       return trips;
     } catch (error) {
       throw error;
@@ -59,6 +62,9 @@ class TripServices {
   async deleteTrip(id) {
     try {
       const trip = await tripRepository.archive(id);
+      if (!trip) {
+        throw new NotFoundError("The specified trip does not exits");
+      }
       return trip;
     } catch (error) {
       throw error;

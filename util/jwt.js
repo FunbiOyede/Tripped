@@ -5,7 +5,7 @@ class JWT {
   async generateAccessToken(payload) {
     const email = payload.email;
     const AccessToken = await sign({ email: email }, config.ACCESS_TOKEN, {
-      expiresIn: "1d",
+      expiresIn: "5d",
     });
 
     return AccessToken;
@@ -18,9 +18,12 @@ class JWT {
     return refreshToken;
   }
 
-  async decyptTokens(token) {
+  async decyptTokens(token, type) {
     try {
-      const payload = await verify(token, config.ACCESS_TOKEN);
+      const payload =
+        type === "access"
+          ? await verify(token, config.ACCESS_TOKEN)
+          : await verify(token, config.REFRESH_TOKEN);
       return payload;
     } catch (error) {
       throw error;

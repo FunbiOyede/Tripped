@@ -28,7 +28,6 @@ class UserController extends BaseController {
         refreshToken,
       });
     } catch (error) {
-      console.log(error);
       error.statusCode = httpStatus.BAD_REQUEST;
       next(new BadRequestError(error));
     }
@@ -40,6 +39,21 @@ class UserController extends BaseController {
       super.reply(res, httpStatus.OK, "The requested user", user);
     } catch (error) {
       error.statusCode = httpStatus.UNAUTHORIZED;
+      next(new BadRequestError(error));
+    }
+  }
+  async getRefreshToken(req, res, next) {
+    try {
+      const { token } = req.body;
+      const user = await jwt.decyptTokens(token, "refresh");
+      const accessToken = await jwt.generateAccessToken(user.email);
+      const refreshToken = await jwt.generateRefreshToken(user.email);
+      super.reply(res, httpStatus.CREATED, "user successfully created", {
+        accessToken,
+        refreshToken,
+      });
+    } catch (error) {
+      error.statusCode = httpStatus.BAD_REQUEST;
       next(new BadRequestError(error));
     }
   }

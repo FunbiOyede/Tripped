@@ -40,6 +40,11 @@ const auth = require("../../middlewares/auth");
 //   console.log(payload);
 // });
 
+router.post(
+  "/refresh_token",
+  auth.isAuthenticated,
+  userController.getRefreshToken
+);
 router.post("/google", userController.createUser);
 router.get("/user", auth.isAuthenticated, userController.getUser);
 
