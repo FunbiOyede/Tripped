@@ -29,40 +29,6 @@ class JWT {
       throw error;
     }
   }
-
-  //   async verify(token) {
-  //     try {
-  //       if (!token) {
-  //         // return { errorMessage: "Token not provided" };
-  //         throw new Error("Token not provided");
-  //       }
-
-  //       const payload = await this.decyptTokens(token);
-  //       if (payload.id === null) {
-  //         throw new Error("invalid token");
-  //       }
-  //       return payload;
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
-
-  //   async verifyCookiesToken(token) {
-  //     try {
-  //       if (!token) {
-  //         // return { errorMessage: "Token not provided" };
-  //         throw new Error("Token not provided");
-  //       }
-
-  //       const payload = await verify(token, process.env.REFRESH_TOKEN_SECRET);
-  //       if (payload.id === null) {
-  //         throw new Error("invalid token");
-  //       }
-  //       return payload;
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
 }
 
 module.exports = new JWT();

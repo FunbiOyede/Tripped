@@ -26,6 +26,9 @@ class BudgetServices {
   async updateBudget(id, data) {
     try {
       const budget = await budgetRespository.update(id, data);
+      if (!budget) {
+        throw new NotFoundError("The specified budget was not found");
+      }
       return budget;
     } catch (error) {
       throw error;
@@ -46,6 +49,9 @@ class BudgetServices {
   async deleteBudget(id) {
     try {
       const budget = await budgetRespository.delete(id);
+      if (!budget) {
+        throw new NotFoundError("The specified budget does not exits");
+      }
       return budget;
     } catch (error) {
       throw error;

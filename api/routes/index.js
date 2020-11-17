@@ -11,9 +11,9 @@ const axios = require("axios");
 const auth = require("../../middlewares/auth");
 
 //google auth
-// router.post("/authenticate/google", (req, res, next) => {
-//   console.log(googleLoginUrl);
-// });
+router.post("/authenticate/google", (req, res, next) => {
+  console.log(googleLoginUrl);
+});
 // router.get("/auth/google/callback", async (req, res, next) => {
 //   const { code } = req.query;
 //   console.log(code);
@@ -46,6 +46,7 @@ router.post(
   userController.getRefreshToken
 );
 router.post("/google", userController.createUser);
+router.post("/login", auth.isAuthenticated, userController.login);
 router.get("/user", auth.isAuthenticated, userController.getUser);
 
 module.exports = router;

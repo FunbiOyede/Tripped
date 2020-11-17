@@ -33,6 +33,34 @@ class UserController extends BaseController {
     }
   }
 
+  async login(req, res, next) {
+    try {
+      const { token } = req.body;
+
+      // Sends the tokenId to the Google API to get  the payload, which conatins the user's email
+      const { data } = await axios({
+        url: "https://www.googleapis.com/oauth2/v2/userinfo",
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { name, email } = data;
+
+      const user = await userService.authenticateUserByEmail(email);
+      const accessToken = await jwt.generateAccessToken(user);
+      const refreshToken = await jwt.generateRefreshToken(user);
+      super.reply(res, httpStatus.CREATED, "login successful", {
+        user,
+        accessToken,
+        refreshToken,
+      });
+    } catch (error) {
+      error.statusCode = httpStatus.BAD_REQUEST;
+      next(new BadRequestError(error));
+    }
+  }
+
   async getUser(req, res, next) {
     try {
       const user = await userService.getUser(req.user.email);

@@ -53,6 +53,9 @@ class TripServices {
   async updateTrip(id, data) {
     try {
       const trip = await tripRepository.update(id, data);
+      if (!trip) {
+        throw new NotFoundError("The specified trip was not found");
+      }
       return trip;
     } catch (error) {
       throw error;
