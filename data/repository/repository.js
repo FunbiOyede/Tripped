@@ -62,6 +62,9 @@ class BaseRepository {
       throw error;
     }
   }
+  async deleteAll() {
+    return this.model.deleteMany({}, () => {});
+  }
 }
 
 module.exports = BaseRepository;

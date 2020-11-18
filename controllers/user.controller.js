@@ -1,7 +1,7 @@
 const userService = require("../services/user.service"),
   httpStatus = require("http-status-codes"),
   BaseController = require("./controller"),
-  { BadRequestError } = require("../util/error");
+  { BadRequestError, GoogleAuthError } = require("../util/error");
 const jwt = require("../util/jwt");
 const axios = require("axios");
 
@@ -28,8 +28,9 @@ class UserController extends BaseController {
         refreshToken,
       });
     } catch (error) {
-      error.statusCode = httpStatus.BAD_REQUEST;
-      next(new BadRequestError(error));
+      // console.log(error.response.status, error.response.statusText);
+      error.statusCode = httpStatus.UNAUTHORIZED;
+      next(new GoogleAuthError(error));
     }
   }
 

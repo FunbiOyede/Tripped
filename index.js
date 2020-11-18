@@ -1,2 +1,3 @@
 const app = require("./app");
-app.start();
+const server = new app();
+server.start();

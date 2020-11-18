@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { googleLoginUrl } = require("../../util/google");
 const userController = require("../../controllers/user.controller");
 const auth = require("../../middlewares/auth");
-
+const { celebrate, Joi, Segments } = require("celebrate");
 //google auth
 router.post("/authenticate/google", (req, res, next) => {
   console.log(googleLoginUrl);
@@ -38,7 +38,17 @@ router.post(
   auth.isAuthenticated,
   userController.getRefreshToken
 );
-router.post("/google", userController.createUser);
+router.post(
+  "/google",
+  [
+    celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        token: Joi.string().required(),
+      }),
+    }),
+  ],
+  userController.createUser
+);
 router.post("/login", auth.isAuthenticated, userController.login);
 router.get("/user", auth.isAuthenticated, userController.getUser);
 

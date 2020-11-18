@@ -56,10 +56,13 @@ class App {
         logger.info("connecting to mongodb server");
       })
       .on("connected", () => {
-        logger.info("Connected to MongoDB, starting API server..");
+        logger.info(
+          `mongodb connected in ${process.env.NODE_ENV} enviroment, starting API server..`
+        );
         server.listen(config.PORT, () => {
-          logger.info(process.env.NODE_ENV);
-          logger.info(`server is running on port ${3000}`);
+          logger.info(
+            `server is running on port ${3000} in ${process.env.NODE_ENV} mode`
+          );
         });
       })
       .on("disconnected", () => {
@@ -93,4 +96,4 @@ class App {
   }
 }
 
-module.exports = new App();
+module.exports = App;
