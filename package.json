@@ -20,6 +20,7 @@
     "node-fetch": "^2.6.1",
     "query-string": "^6.13.6",
     "redis": "^3.0.2",
+    "supertest": "^6.0.1",
     "winston": "^3.3.3"
   },
   "scripts": {

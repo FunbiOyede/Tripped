@@ -1,13 +1,6 @@
 const router = require("express").Router();
-const tripController = require("../../controllers/trip.controllers");
-const { celebrate, Joi, Segments } = require("celebrate");
-const budgetController = require("../../controllers/budget.controller");
-const cacheMiddleware = require("../../middlewares/cacheMiddleware");
-const acitivityController = require("../../controllers/activity.controller");
-const config = require("../../config/index");
 const { googleLoginUrl } = require("../../util/google");
 const userController = require("../../controllers/user.controller");
-const axios = require("axios");
 const auth = require("../../middlewares/auth");
 
 //google auth

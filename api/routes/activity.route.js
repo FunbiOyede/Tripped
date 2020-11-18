@@ -2,6 +2,7 @@ const auth = require("../../middlewares/auth");
 const { celebrate, Joi, Segments } = require("celebrate");
 const acitivityController = require("../../controllers/activity.controller");
 const activityRouter = require("express").Router();
+
 //ALL ACTIVITIES
 activityRouter.get(
   "/activities",
