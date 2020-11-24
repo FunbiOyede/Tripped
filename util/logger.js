@@ -20,10 +20,12 @@ const options = {
     colorize: true,
   },
 };
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "production") {
+  transport.push(new transports.File(options.file));
+} else if (process.env.NODE_ENV === "development") {
   transport.push(new transports.Console(options.console));
 } else {
-  transport.push(new transports.File(options.file));
+  transport.push(new transports.Console(options.console));
 }
 
 const logger = createLogger({

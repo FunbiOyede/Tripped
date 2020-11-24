@@ -27,13 +27,13 @@
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon .",
     "start": "set NODE_ENV=production && node index.js",
-    "test": " set NODE_ENV=test && jest  --detectOpenHandles --forceExit"
+    "test": "jest  --detectOpenHandles --forceExit"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
   },
   "jest":{
     "testEnvironment": "node",
-    "modulePathIgnorePatterns": ["mocks","config"]
+    "modulePathIgnorePatterns": ["mocks","config","util"]
   }
 }
