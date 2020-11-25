@@ -2,6 +2,7 @@ const app = require("../../../app");
 const server = new app();
 const supertest = require("supertest");
 const mongoose = require("mongoose");
+const activityModel = require("../../../data/model/Activity");
 const config = require("../../../config/test");
 const activityRepository = require("../../../data/repository/activity.respository");
 const userRepository = require("../../../data/repository/user.repository");
@@ -11,19 +12,30 @@ const { closeRedis } = require("../../../data/connections/connectRedis");
 const userData = require("../../mocks/user");
 const { headers, authHeaders } = require("../../util/auth");
 const { errorMessage } = require("../../util/constants");
-const { acitvityDataOne, acitvityDataTwo } = require("../../mocks/activity");
+const {
+  acitvityDataOne,
+  acitvityDataTwo,
+  acitvityDataThree,
+  acitvityDataFour,
+} = require("../../mocks/activity");
 const jwt = require("../../../util/jwt");
 
 describe("ACTIVITY SERVICES", () => {
   let user;
   let accessToken;
+  let acitvityDataTwoId;
+  let acitvityDataThreeId;
 
   beforeAll(async () => {
     await mongoose.connect(
       config.TEST_DB_URL,
       {
         useNewUrlParser: true,
+        useCreateIndex: false,
         useUnifiedTopology: true,
+        useFindAndModify: false,
+        serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
       },
       (err) => {
         if (err) {
@@ -32,17 +44,29 @@ describe("ACTIVITY SERVICES", () => {
         }
       }
     );
+
+    closeRedis();
+  });
+  afterAll((done) => {
+    closeRedis();
+    done();
   });
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
-    closeRedis();
+    acitvityDataTwo.userId = user._id;
+    acitvityDataThree.userId = user._id;
+    const docs = await activityModel.insertMany([
+      acitvityDataTwo,
+      acitvityDataThree,
+    ]);
+
+    acitvityDataTwoId = docs[0]._id;
+    acitvityDataThreeId = docs[1]._id;
   });
 
   afterEach(async () => {
-    closeRedis(),
-      await userRepository.deleteAll(),
-      await activityRepository.deleteAll();
+    await userRepository.deleteAll(), await activityRepository.deleteAll();
   });
 
   describe("POST /activity", () => {
@@ -70,7 +94,60 @@ describe("ACTIVITY SERVICES", () => {
 
       done();
     });
+
+    it("should send an error if an empty body is sent", async (done) => {
+      const res = await authHeaders(
+        request.post("/activity").send({}),
+        accessToken
+      );
+      expect(res.body.statusCode).toBe(httpStatus.BAD_REQUEST);
+      expect(res.body.error).toBe(errorMessage.Validation.type);
+      done();
+    });
   });
 
-  //test for validation
+  it("should get all activities", async (done) => {
+    const res = await authHeaders(request.get("/activities"), accessToken);
+    expect(res.statusCode).toBe(httpStatus.OK);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("The list of activities");
+    expect(res.body).toHaveProperty("data");
+    expect(res.body.data).toHaveLength(2);
+    done();
+  });
+
+  it("should get an activity", async (done) => {
+    const res = await authHeaders(
+      request.get(`/activity/${acitvityDataTwoId}`),
+      accessToken
+    );
+
+    expect(res.statusCode).toBe(httpStatus.OK);
+    expect(res.body.status).toBe("success");
+    expect(res.body.data._id).toBe(acitvityDataTwoId.toString());
+    expect(res.body.data.address).toBe(acitvityDataTwo.address);
+    done();
+  });
+
+  it("should delete an activity", async (done) => {
+    const res = await authHeaders(
+      request.delete(`/activity/${acitvityDataTwoId}`),
+      accessToken
+    );
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("The activity was successfully deleted");
+    expect(res.body).toHaveProperty("data");
+    done();
+  });
+  it("should update an activity", async (done) => {
+    const res = await authHeaders(
+      request.post(`/activity/${acitvityDataTwoId}`).send(acitvityDataFour),
+      accessToken
+    );
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("The activity was successfully updated");
+    expect(res.body).toHaveProperty("data");
+    expect(res.body.data.address).toBe(acitvityDataFour.address);
+    done();
+  });
 });

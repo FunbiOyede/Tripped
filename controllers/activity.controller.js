@@ -19,7 +19,7 @@ class ActivityController extends BaseController {
   }
   async updateActivity(req, res, next) {
     const { id } = req.params;
-    console.log(req.user);
+
     try {
       const activity = await activityServices.updateActivity(id, req.body);
       super.reply(

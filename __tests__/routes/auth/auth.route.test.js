@@ -15,7 +15,11 @@ beforeAll(async () => {
     config.TEST_DB_URL,
     {
       useNewUrlParser: true,
+      useCreateIndex: false,
       useUnifiedTopology: true,
+      useFindAndModify: false,
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     },
     (err) => {
       if (err) {
@@ -24,10 +28,15 @@ beforeAll(async () => {
       }
     }
   );
+  closeRedis();
+});
+
+afterAll((done) => {
+  closeRedis();
+  done();
 });
 beforeEach(async () => {
   await userRepository.deleteAll();
-  closeRedis();
 });
 
 afterEach(async () => await userRepository.deleteAll());

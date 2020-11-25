@@ -22,7 +22,11 @@ describe("TRIP SERVICES", () => {
       config.TEST_DB_URL,
       {
         useNewUrlParser: true,
+        useCreateIndex: false,
         useUnifiedTopology: true,
+        useFindAndModify: false,
+        serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
       },
       (err) => {
         if (err) {
@@ -32,14 +36,18 @@ describe("TRIP SERVICES", () => {
       }
     );
   });
+
+  afterAll((done) => {
+    closeRedis();
+    done();
+  });
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
-    closeRedis();
   });
 
   afterEach(async () => {
-    await userRepository.deleteAll(), tripRepository.deleteAll(), closeRedis();
+    await userRepository.deleteAll(), tripRepository.deleteAll();
   });
 
   describe("POST /trip", () => {
@@ -48,6 +56,35 @@ describe("TRIP SERVICES", () => {
       expect(res.status).toBe(httpStatus.UNAUTHORIZED);
       expect(res.body.type).toBe(errorMessage.Authentication.type);
       expect(res.body.message).toBe(errorMessage.Authentication.message);
+      done();
+    });
+
+    it("should create a trip successfully", async (done) => {
+      const res = await authHeaders(
+        request.post("/trip").send(tripDataOne),
+        accessToken
+      );
+
+      expect(res.status).toBe(httpStatus.CREATED);
+      expect(res.statusCode).toBe(httpStatus.CREATED);
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.data).toHaveProperty("_id");
+      expect(res.body.data).toHaveProperty("userId");
+      expect(res.body.data).toHaveProperty("location");
+      expect(res.body.data).toHaveProperty("title");
+      expect(res.body.data).toHaveProperty("startDate");
+      expect(res.body.data).toHaveProperty("endDate");
+      expect(res.body.data).toHaveProperty("numberOfDays");
+      done();
+    });
+
+    it("should send an error if an empty body is sent", async (done) => {
+      const res = await authHeaders(
+        request.post("/trip").send({}),
+        accessToken
+      );
+      expect(res.body.statusCode).toBe(httpStatus.BAD_REQUEST);
+      expect(res.body.error).toBe(errorMessage.Validation.type);
       done();
     });
   });

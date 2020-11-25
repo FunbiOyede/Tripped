@@ -15,4 +15,18 @@ module.exports = {
     date: "3rd of winter",
     trip: new Types.ObjectId(),
   },
+  acitvityDataThree: {
+    place: "Dragonstone",
+    address: "Blue sea",
+    time: "5pm",
+    date: "4th of january",
+    trip: new Types.ObjectId(),
+  },
+  acitvityDataFour: {
+    place: "Dominoes",
+    address: "Blue sea",
+    time: "5pm",
+    date: "4th of january",
+    trip: new Types.ObjectId(),
+  },
 };

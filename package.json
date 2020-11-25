@@ -27,7 +27,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon .",
     "start": "set NODE_ENV=production && node index.js",
-    "test": "jest  --detectOpenHandles --forceExit"
+    "test": "jest  --detectOpenHandles --forceExit --no-cache ./*"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

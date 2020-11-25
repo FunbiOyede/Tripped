@@ -3,9 +3,11 @@ const config = require("../../config/index");
 const setupDB = () => {
   return new mongoose.connect(config.DB_URL, {
     useNewUrlParser: true,
-    useCreateIndexes: true,
+    useCreateIndexes: false,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
   });
 };
 
