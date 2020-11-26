@@ -9,7 +9,15 @@ module.exports = {
   budgetDataTwo: {
     amount: 700,
     currency: "#",
-
     trip: new Types.ObjectId(),
+  },
+  budgetDataThree: {
+    amount: 80,
+    currency: "£",
+    trip: new Types.ObjectId(),
+  },
+  budgetDataFour: {
+    amount: 20,
+    currency: "€",
   },
 };

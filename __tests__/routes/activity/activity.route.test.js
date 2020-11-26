@@ -134,6 +134,7 @@ describe("ACTIVITY SERVICES", () => {
       request.delete(`/activity/${acitvityDataTwoId}`),
       accessToken
     );
+    expect(res.statusCode).toBe(httpStatus.OK);
     expect(res.body.status).toBe("success");
     expect(res.body.message).toBe("The activity was successfully deleted");
     expect(res.body).toHaveProperty("data");
@@ -144,6 +145,7 @@ describe("ACTIVITY SERVICES", () => {
       request.post(`/activity/${acitvityDataTwoId}`).send(acitvityDataFour),
       accessToken
     );
+    expect(res.statusCode).toBe(httpStatus.OK);
     expect(res.body.status).toBe("success");
     expect(res.body.message).toBe("The activity was successfully updated");
     expect(res.body).toHaveProperty("data");

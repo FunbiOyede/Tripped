@@ -2,6 +2,7 @@ const app = require("../../../app");
 const server = new app();
 const supertest = require("supertest");
 const mongoose = require("mongoose");
+const budgetModel = require("../../../data/model/Budget");
 const config = require("../../../config/test");
 const httpStatus = require("http-status-codes");
 const { headers, authHeaders } = require("../../util/auth");
@@ -12,11 +13,17 @@ const { closeRedis } = require("../../../data/connections/connectRedis");
 const jwt = require("../../../util/jwt");
 const userData = require("../../mocks/user");
 const { errorMessage } = require("../../util/constants");
-const { budgetDataOne } = require("../../mocks/budget");
+const {
+  budgetDataOne,
+  budgetDataTwo,
+  budgetDataThree,
+  budgetDataFour,
+} = require("../../mocks/budget");
+
 describe("BUDGET SERVICES", () => {
   let user;
   let accessToken;
-
+  let budgetId;
   beforeAll(async () => {
     await mongoose.connect(
       config.TEST_DB_URL,
@@ -44,6 +51,10 @@ describe("BUDGET SERVICES", () => {
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
+    budgetDataTwo.userId = user._id;
+    budgetDataThree.userId = user._id;
+    const docs = await budgetModel.insertMany([budgetDataTwo, budgetDataThree]);
+    budgetId = docs[0]._id;
   });
 
   afterEach(async () => {
@@ -85,6 +96,55 @@ describe("BUDGET SERVICES", () => {
       );
       expect(res.body.statusCode).toBe(httpStatus.BAD_REQUEST);
       expect(res.body.error).toBe(errorMessage.Validation.type);
+      done();
+    });
+
+    it("should get all budgets", async (done) => {
+      const res = await authHeaders(request.get("/budgets"), accessToken);
+      expect(res.statusCode).toBe(httpStatus.OK);
+      expect(res.body.status).toBe("success");
+      expect(res.body.message).toBe("The list of budgets");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.data).toHaveLength(2);
+      done();
+    });
+    it("should get a budget", async (done) => {
+      const res = await authHeaders(
+        request.get(`/budget/${budgetId}`),
+        accessToken
+      );
+
+      expect(res.statusCode).toBe(httpStatus.OK);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data._id).toBe(budgetId.toString());
+      expect(res.body.data.amount).toBe(budgetDataTwo.amount);
+      done();
+    });
+    it("should delete a budget", async (done) => {
+      const res = await authHeaders(
+        request.delete(`/budget/${budgetId}`),
+        accessToken
+      );
+
+      expect(res.statusCode).toBe(httpStatus.OK);
+      expect(res.body.status).toBe("success");
+      expect(res.body.message).toBe("The budget was successfully deleted");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.data.amount).toBe(budgetDataTwo.amount);
+      done();
+    });
+    it("should update a budet", async (done) => {
+      const res = await authHeaders(
+        request.post(`/budget/${budgetId}`).send(budgetDataFour),
+        accessToken
+      );
+
+      expect(res.statusCode).toBe(httpStatus.OK);
+
+      expect(res.body.status).toBe("success");
+      expect(res.body.message).toBe("The budget was successfully updated");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.data.amount).toBe(budgetDataFour.amount);
       done();
     });
   });
