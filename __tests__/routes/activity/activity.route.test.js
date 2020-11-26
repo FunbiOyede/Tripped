@@ -13,10 +13,10 @@ const userData = require("../../mocks/user");
 const { headers, authHeaders } = require("../../util/auth");
 const { errorMessage } = require("../../util/constants");
 const {
-  acitvityDataOne,
-  acitvityDataTwo,
-  acitvityDataThree,
-  acitvityDataFour,
+  activityDataOne,
+  activityDataTwo,
+  activityDataThree,
+  activityDataFour,
 } = require("../../mocks/activity");
 const jwt = require("../../../util/jwt");
 
@@ -53,11 +53,11 @@ describe("ACTIVITY SERVICES", () => {
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
-    acitvityDataTwo.userId = user._id;
-    acitvityDataThree.userId = user._id;
+    activityDataTwo.userId = user._id;
+    activityDataThree.userId = user._id;
     const docs = await activityModel.insertMany([
-      acitvityDataTwo,
-      acitvityDataThree,
+      activityDataTwo,
+      activityDataThree,
     ]);
 
     activityId = docs[0]._id;
@@ -70,7 +70,7 @@ describe("ACTIVITY SERVICES", () => {
   describe("POST /activity", () => {
     it("should send an error if authorization header not present", async (done) => {
       const res = await headers(
-        request.post("/activity").send(acitvityDataOne)
+        request.post("/activity").send(activityDataOne)
       );
       expect(res.status).toBe(httpStatus.UNAUTHORIZED);
       expect(res.body.type).toBe(errorMessage.Authentication.type);
@@ -80,7 +80,7 @@ describe("ACTIVITY SERVICES", () => {
 
     it("should create an activity successfully", async (done) => {
       const res = await authHeaders(
-        request.post("/activity").send(acitvityDataOne),
+        request.post("/activity").send(activityDataOne),
         accessToken
       );
       expect(res.status).toBe(httpStatus.CREATED);
@@ -123,7 +123,7 @@ describe("ACTIVITY SERVICES", () => {
     expect(res.statusCode).toBe(httpStatus.OK);
     expect(res.body.status).toBe("success");
     expect(res.body.data._id).toBe(activityId.toString());
-    expect(res.body.data.address).toBe(acitvityDataTwo.address);
+    expect(res.body.data.address).toBe(activityDataTwo.address);
     done();
   });
 
@@ -140,14 +140,14 @@ describe("ACTIVITY SERVICES", () => {
   });
   it("should update an activity", async (done) => {
     const res = await authHeaders(
-      request.post(`/activity/${activityId}`).send(acitvityDataFour),
+      request.post(`/activity/${activityId}`).send(activityDataFour),
       accessToken
     );
     expect(res.statusCode).toBe(httpStatus.OK);
     expect(res.body.status).toBe("success");
     expect(res.body.message).toBe("The activity was successfully updated");
     expect(res.body).toHaveProperty("data");
-    expect(res.body.data.address).toBe(acitvityDataFour.address);
+    expect(res.body.data.address).toBe(activityDataFour.address);
     done();
   });
 });
