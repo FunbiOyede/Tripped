@@ -23,8 +23,7 @@ const jwt = require("../../../util/jwt");
 describe("ACTIVITY SERVICES", () => {
   let user;
   let accessToken;
-  let acitvityDataTwoId;
-  let acitvityDataThreeId;
+  let activityId;
 
   beforeAll(async () => {
     await mongoose.connect(
@@ -61,8 +60,7 @@ describe("ACTIVITY SERVICES", () => {
       acitvityDataThree,
     ]);
 
-    acitvityDataTwoId = docs[0]._id;
-    acitvityDataThreeId = docs[1]._id;
+    activityId = docs[0]._id;
   });
 
   afterEach(async () => {
@@ -118,20 +116,20 @@ describe("ACTIVITY SERVICES", () => {
 
   it("should get an activity", async (done) => {
     const res = await authHeaders(
-      request.get(`/activity/${acitvityDataTwoId}`),
+      request.get(`/activity/${activityId}`),
       accessToken
     );
 
     expect(res.statusCode).toBe(httpStatus.OK);
     expect(res.body.status).toBe("success");
-    expect(res.body.data._id).toBe(acitvityDataTwoId.toString());
+    expect(res.body.data._id).toBe(activityId.toString());
     expect(res.body.data.address).toBe(acitvityDataTwo.address);
     done();
   });
 
   it("should delete an activity", async (done) => {
     const res = await authHeaders(
-      request.delete(`/activity/${acitvityDataTwoId}`),
+      request.delete(`/activity/${activityId}`),
       accessToken
     );
     expect(res.statusCode).toBe(httpStatus.OK);
@@ -142,7 +140,7 @@ describe("ACTIVITY SERVICES", () => {
   });
   it("should update an activity", async (done) => {
     const res = await authHeaders(
-      request.post(`/activity/${acitvityDataTwoId}`).send(acitvityDataFour),
+      request.post(`/activity/${activityId}`).send(acitvityDataFour),
       accessToken
     );
     expect(res.statusCode).toBe(httpStatus.OK);
