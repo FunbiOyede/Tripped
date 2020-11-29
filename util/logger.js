@@ -21,7 +21,7 @@ const options = {
   },
 };
 if (process.env.NODE_ENV === "production") {
-  transport.push(new transports.File(options.file));
+  transport.push(new transports.Console(options.console));
 } else if (process.env.NODE_ENV === "development") {
   transport.push(new transports.Console(options.console));
 } else {

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const config = require("../../config/index");
+
 const setupDB = () => {
   return new mongoose.connect(config.DB_URL, {
     useNewUrlParser: true,
-    useCreateIndexes: false,
+    useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
