@@ -26,23 +26,12 @@ describe("ACTIVITY SERVICES", () => {
   let activityId;
 
   beforeAll(async () => {
-    await mongoose.connect(
-      config.TEST_DB_URL,
-      {
-        useNewUrlParser: true,
-        useCreateIndex: false,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      },
-      (err) => {
-        if (err) {
-          console.error(err);
-          process.exit(1);
-        }
+    await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
       }
-    );
+    });
 
     closeRedis();
   });
