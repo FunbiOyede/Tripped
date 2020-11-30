@@ -101,11 +101,11 @@ class TripControllers extends BaseController {
     }
   }
 
-  async getWeather(req, res) {
+  async getWeather(req, res, next) {
     try {
       const { location } = req.query;
-      const result = await api_client.WeatherForecast({
-        q: location.toUpper(),
+      const result = await api_client.getWeatherData({
+        q: location.toUpperCase(),
       });
       super.reply(res, httpStatus.OK, "The requested weather forecast", result);
     } catch (error) {

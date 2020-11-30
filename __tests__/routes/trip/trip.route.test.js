@@ -34,10 +34,13 @@ describe("TRIP SERVICES", () => {
         process.exit(1);
       }
     });
+    await closeRedis();
   });
 
-  afterAll((done) => {
-    closeRedis();
+  afterAll(async (done) => {
+    await closeRedis();
+    await mongoose.connection.close();
+
     done();
   });
   beforeEach(async () => {

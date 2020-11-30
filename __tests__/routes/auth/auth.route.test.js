@@ -8,7 +8,6 @@ const httpStatus = require("http-status-codes");
 const request = supertest(server.app);
 const { closeRedis } = require("../../../data/connections/connectRedis");
 const { headers } = require("../../util/auth");
-const { response } = require("express");
 
 beforeAll(async () => {
   await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
@@ -17,11 +16,13 @@ beforeAll(async () => {
       process.exit(1);
     }
   });
-  closeRedis();
+  await closeRedis();
 });
 
-afterAll((done) => {
-  closeRedis();
+afterAll(async (done) => {
+  await closeRedis();
+  await mongoose.connection.close();
+
   done();
 });
 beforeEach(async () => {

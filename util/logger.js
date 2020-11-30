@@ -5,7 +5,7 @@ const transport = [];
 
 const options = {
   file: {
-    filename: ".logs/error.log",
+    filename: ".logs/prod-error.log",
     level: "error",
     handleExceptions: true,
     json: true,

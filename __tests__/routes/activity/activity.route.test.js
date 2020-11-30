@@ -32,11 +32,12 @@ describe("ACTIVITY SERVICES", () => {
         process.exit(1);
       }
     });
-
-    closeRedis();
+    await closeRedis();
   });
-  afterAll((done) => {
-    closeRedis();
+  afterAll(async (done) => {
+    await closeRedis();
+    await mongoose.connection.close();
+
     done();
   });
   beforeEach(async () => {

@@ -17,7 +17,7 @@ const connectRedis = () => {
 };
 
 const closeRedis = () => {
-  async function shutdown() {
+  return async function shutdown() {
     await new Promise((resolve) => {
       redis.quit(() => {
         resolve();
@@ -26,7 +26,7 @@ const closeRedis = () => {
     // redis.quit() creates a thread to close the connection.
     // We wait until all threads have been run once to ensure the connection closes.
     await new Promise((resolve) => setImmediate(resolve));
-  }
+  };
 };
 module.exports = {
   client,
