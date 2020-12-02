@@ -13,7 +13,7 @@ env:
   - REFRESH_TOKEN=trippedRefreshToken
   - PORT=3000
 cache: 
-	directories:
+  directories:
     - node_modules
 install:
   - yarn install
