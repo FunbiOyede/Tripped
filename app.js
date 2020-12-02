@@ -23,6 +23,7 @@ class App {
   constructor() {
     this.app = express();
     this.configure();
+    this.PORT = config.PORT || process.env.PORT;
   }
   configure() {
     this.app.use(cors());
@@ -59,7 +60,7 @@ class App {
         logger.info(
           `mongodb connected in ${process.env.NODE_ENV} enviroment, starting API server..`
         );
-        server.listen(config.PORT, () => {
+        server.listen(this.PORT, () => {
           logger.info(
             `server is running on port ${3000} in ${process.env.NODE_ENV} mode`
           );

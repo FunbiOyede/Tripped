@@ -1,7 +1,6 @@
 const redis = require("redis");
-//chane to index
 const { logger } = require("../../util/logger");
-const config = require("../../config/dev");
+const config = require("../../config/index");
 const client = redis.createClient(config.REDIS_URL);
 
 const connectRedis = () => {
