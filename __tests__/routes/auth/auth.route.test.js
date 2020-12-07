@@ -8,6 +8,15 @@ const httpStatus = require("http-status-codes");
 const request = supertest(server.app);
 const { closeRedis } = require("../../../data/connections/connectRedis");
 const { headers } = require("../../util/auth");
+const {
+  removeAllCollections,
+  dropAllCollections,
+} = require("../../util/helper");
+
+/**
+ * connects to database before running any test
+ *
+ */
 beforeAll(async () => {
   await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
     if (err) {
@@ -18,17 +27,26 @@ beforeAll(async () => {
   await closeRedis();
 });
 
-afterAll(async (done) => {
-  await closeRedis();
-  await mongoose.connection.close();
-
-  done();
-});
 beforeEach(async () => {
   await userRepository.deleteAll();
 });
 
-afterEach(async () => await userRepository.deleteAll());
+/**
+ * cleans database
+ */
+
+afterEach(async () => {
+  await removeAllCollections();
+});
+
+/**
+ * drops all db and disconnects mongoose
+ */
+afterAll(async (done) => {
+  await dropAllCollections();
+  await mongoose.connection.close();
+  done();
+});
 
 describe("POST /google", () => {
   //throw an error if there is no token to be authenticated by google

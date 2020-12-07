@@ -9,6 +9,7 @@ services:
   - redis-server
 env:
   - NODE_ENV=test
+  - TEST_CI_DB_URL=mongodb://127.0.0.1:27017/CITestTripped
   - ACCESS_TOKEN=trippedAcessToken
   - REFRESH_TOKEN=trippedRefreshToken
   - PORT=3000

@@ -1,6 +1,6 @@
 require("dotenv").config();
 module.exports = {
-  TEST_DB_URL: process.env.TEST_DB_URL,
+  TEST_DB_URL: process.env.TEST_DB_URL || process.env.TEST_CI_DB_URL,
   ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   REFRESH_TOKEN: process.env.REFRESH_TOKEN,
   REDIS_URL: process.env.REDIS_URL,
