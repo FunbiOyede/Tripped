@@ -3,7 +3,7 @@ const server = new app();
 const supertest = require("supertest");
 const mongoose = require("mongoose");
 const activityModel = require("../../../data/model/Activity");
-const config = require("../../../config/test");
+const config = require("../../../config/index");
 const activityRepository = require("../../../data/repository/activity.respository");
 const userRepository = require("../../../data/repository/user.repository");
 const httpStatus = require("http-status-codes");
@@ -19,12 +19,20 @@ const {
   activityDataFour,
 } = require("../../mocks/activity");
 const jwt = require("../../../util/jwt");
+const {
+  removeAllCollections,
+  dropAllCollections,
+} = require("../../util/helper");
 
 describe("ACTIVITY SERVICES", () => {
   let user;
   let accessToken;
   let activityId;
 
+  /**
+   * connects to database before running any test
+   *
+   */
   beforeAll(async () => {
     await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
       if (err) {
@@ -34,12 +42,7 @@ describe("ACTIVITY SERVICES", () => {
     });
     await closeRedis();
   });
-  afterAll(async (done) => {
-    await closeRedis();
-    await mongoose.connection.close();
 
-    done();
-  });
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
@@ -49,12 +52,23 @@ describe("ACTIVITY SERVICES", () => {
       activityDataTwo,
       activityDataThree,
     ]);
-
     activityId = docs[0]._id;
   });
+  /**
+   * cleans database
+   */
 
   afterEach(async () => {
-    await userRepository.deleteAll(), await activityRepository.deleteAll();
+    await removeAllCollections();
+  });
+
+  /**
+   * drops all db and disconnects mongoose
+   */
+  afterAll(async (done) => {
+    await dropAllCollections();
+    await mongoose.connection.close();
+    done();
   });
 
   describe("POST /activity", () => {

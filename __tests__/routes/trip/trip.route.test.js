@@ -2,7 +2,7 @@ const app = require("../../../app");
 const server = new app();
 const supertest = require("supertest");
 const mongoose = require("mongoose");
-const config = require("../../../config/test");
+const config = require("../../../config/index");
 const httpStatus = require("http-status-codes");
 const tripModel = require("../../../data/model/Trips");
 const { headers, authHeaders } = require("../../util/auth");
@@ -21,12 +21,20 @@ const {
   deletedTrip,
   deletedTripTwo,
 } = require("../../mocks/trip");
+const {
+  removeAllCollections,
+  dropAllCollections,
+} = require("../../util/helper");
 describe("TRIP SERVICES", () => {
   let user;
   let accessToken;
   let tripId;
   let deletedTripId;
 
+  /**
+   * connects to database before running any test
+   *
+   */
   beforeAll(async () => {
     await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
       if (err) {
@@ -37,12 +45,6 @@ describe("TRIP SERVICES", () => {
     await closeRedis();
   });
 
-  afterAll(async (done) => {
-    await closeRedis();
-    await mongoose.connection.close();
-
-    done();
-  });
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
@@ -60,8 +62,21 @@ describe("TRIP SERVICES", () => {
     deletedTripId = docs[2]._id;
   });
 
+  /**
+   * cleans database
+   */
+
   afterEach(async () => {
-    await userRepository.deleteAll(), tripRepository.deleteAll();
+    await removeAllCollections();
+  });
+
+  /**
+   * drops all db and disconnects mongoose
+   */
+  afterAll(async (done) => {
+    await dropAllCollections();
+    await mongoose.connection.close();
+    done();
   });
 
   describe("POST /trip", () => {

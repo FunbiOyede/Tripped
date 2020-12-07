@@ -3,7 +3,7 @@ const server = new app();
 const supertest = require("supertest");
 const mongoose = require("mongoose");
 const budgetModel = require("../../../data/model/Budget");
-const config = require("../../../config/test");
+const config = require("../../../config/index");
 const httpStatus = require("http-status-codes");
 const { headers, authHeaders } = require("../../util/auth");
 const request = supertest(server.app);
@@ -19,11 +19,19 @@ const {
   budgetDataThree,
   budgetDataFour,
 } = require("../../mocks/budget");
-
+const {
+  removeAllCollections,
+  dropAllCollections,
+} = require("../../util/helper");
 describe("BUDGET SERVICES", () => {
   let user;
   let accessToken;
   let budgetId;
+
+  /**
+   * connects to database before running any test
+   *
+   */
   beforeAll(async () => {
     await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
       if (err) {
@@ -33,12 +41,7 @@ describe("BUDGET SERVICES", () => {
     });
     await closeRedis();
   });
-  afterAll(async (done) => {
-    await closeRedis();
-    await mongoose.connection.close();
 
-    done();
-  });
   beforeEach(async () => {
     user = await userRepository.create(userData.userOne);
     accessToken = await jwt.generateAccessToken(user);
@@ -47,9 +50,20 @@ describe("BUDGET SERVICES", () => {
     const docs = await budgetModel.insertMany([budgetDataTwo, budgetDataThree]);
     budgetId = docs[0]._id;
   });
+  /**
+   * cleans database
+   */
 
   afterEach(async () => {
-    await userRepository.deleteAll(), budgetRepository.deleteAll();
+    await removeAllCollections();
+  });
+  /**
+   * drops all db and disconnects mongoose
+   */
+  afterAll(async (done) => {
+    await dropAllCollections();
+    await mongoose.connection.close();
+    done();
   });
 
   describe("POST /budget", () => {

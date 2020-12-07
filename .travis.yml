@@ -12,6 +12,7 @@ env:
   - ACCESS_TOKEN=trippedAcessToken
   - REFRESH_TOKEN=trippedRefreshToken
   - PORT=3000
+  - 
 cache: 
 	directories:
     - node_modules
@@ -20,4 +21,3 @@ install:
 script:
   - sleep 3
   - yarn test
-

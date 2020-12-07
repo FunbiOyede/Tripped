@@ -24,6 +24,7 @@ class App {
     this.app = express();
     this.configure();
     this.PORT = config.PORT || process.env.PORT;
+    this.closeServer;
   }
   configure() {
     this.app.use(cors());
@@ -60,7 +61,7 @@ class App {
         logger.info(
           `mongodb connected in ${process.env.NODE_ENV} enviroment, starting API server..`
         );
-        server.listen(this.PORT, () => {
+        this.closeServer = server.listen(this.PORT, () => {
           logger.info(
             `server is running on port ${3000} in ${process.env.NODE_ENV} mode`
           );
@@ -75,7 +76,7 @@ class App {
       });
 
     const handleSuccessExit = (signal) => {
-      logger.info(`Received ${signal}`);
+      //logger.info(`Received ${signal}`);
       logger.info("closing the server");
       server.close(() => {
         logger.info("closing database");
@@ -94,6 +95,9 @@ class App {
     process.on("SIGTERM", handleSuccessExit);
     process.on("uncaughtException", handleFailureExit);
     process.on("unhandledRejection", handleFailureExit);
+  }
+  close() {
+    return this.closeServer.close();
   }
 }
 

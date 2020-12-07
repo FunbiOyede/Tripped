@@ -63,7 +63,7 @@ class BaseRepository {
     }
   }
   async deleteAll() {
-    return this.model.deleteMany({}, () => {});
+    return this.model.deleteMany();
   }
 }
 
