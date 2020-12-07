@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - '8'
-  - '10'
-  - '12'
+  - "8"
+  - "10"
+  - "12"
 dist: trusty
 services:
   - mongodb
@@ -13,12 +13,12 @@ env:
   - ACCESS_TOKEN=trippedAcessToken
   - REFRESH_TOKEN=trippedRefreshToken
   - PORT=3000
-  - 
-cache: 
+  -
+cache:
   directories:
     - node_modules
 install:
   - yarn install
 script:
   - sleep 3
-  - yarn test
+  - yarn test:unit
