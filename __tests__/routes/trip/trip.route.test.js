@@ -36,12 +36,16 @@ describe("TRIP SERVICES", () => {
    *
    */
   beforeAll(async () => {
-    await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
-      if (err) {
-        console.error(err);
-        process.exit(1);
+    await mongoose.connect(
+      config.TEST_DB_URL || process.env.TEST_CI_DB_URL,
+      config.DB_CONFIG,
+      (err) => {
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
       }
-    });
+    );
     await closeRedis();
   });
 

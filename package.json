@@ -28,7 +28,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon .",
     "start": "cross-env NODE_ENV=production node index.js",
-    "test:unit": " cross-env NODE_ENV=test jest --runInBand --forceExit --no-cache ./*"
+    "test": "cross-env NODE_ENV=test jest --runInBand --forceExit --no-cache",
+    "test:unit": "cross-env NODE_ENV=test jest --runInBand --forceExit --no-cache ./* --coverage"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
