@@ -8,7 +8,6 @@ services:
   - redis-server
 env:
   - NODE_ENV=ci_test
-  - PORT=3001
 cache:
   directories:
     - node_modules
