@@ -35,7 +35,7 @@ describe("TRIP SERVICES", () => {
    *
    */
   beforeAll(async () => {
-    await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
+    await mongoose.connect(process.env.TEST_DB_URL, config.DB_CONFIG, (err) => {
       if (err) {
         console.error(err);
         process.exit(1);
