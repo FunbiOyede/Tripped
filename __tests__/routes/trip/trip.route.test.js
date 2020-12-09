@@ -8,7 +8,6 @@ const tripModel = require("../../../data/model/Trips");
 const { headers, authHeaders } = require("../../util/auth");
 const request = supertest(server.app);
 const userRepository = require("../../../data/repository/user.repository");
-const tripRepository = require("../../../data/repository/trip.repository");
 const { closeRedis } = require("../../../data/connections/connectRedis");
 const jwt = require("../../../util/jwt");
 const userData = require("../../mocks/user");
@@ -35,13 +34,14 @@ describe("TRIP SERVICES", () => {
    *
    */
   beforeAll(async () => {
-    await mongoose.connect(process.env.TEST_DB_URL, config.DB_CONFIG, (err) => {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-    });
-    await closeRedis();
+    setupDB();
+    // await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
+    //   if (err) {
+    //     console.error(err);
+    //     process.exit(1);
+    //   }
+    // });
+    // await closeRedis();
   });
 
   beforeEach(async () => {

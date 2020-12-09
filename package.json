@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon .",
     "start": "cross-env NODE_ENV=production node index.js",
-    "test": "cross-env NODE_ENV=ci_test TEST_DB_URL=mongodb://127.0.0.1:27017/TestTripped jest --runInBand --forceExit --no-cache",
+    "test": "jest --runInBand --forceExit --no-cache",
     "test:unit": "cross-env NODE_ENV=test jest --runInBand --forceExit --no-cache ./* --coverage"
   },
   "devDependencies": {

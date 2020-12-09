@@ -1,8 +1,8 @@
 require("dotenv").config();
 module.exports = {
-  TEST_DB_URL: process.env.TEST_DB_URL,
-  ACCESS_TOKEN: process.env.ACCESS_TOKEN,
-  REFRESH_TOKEN: process.env.REFRESH_,
+  TEST_DB_URL: "mongodb://127.0.0.1:27017/TestTripped",
+  ACCESS_TOKEN: "trippedAcessToken",
+  REFRESH_TOKEN: "trippedRefreshToken",
   REDIS_URL: process.env.REDIS_URL,
   DB_CONFIG: {
     useNewUrlParser: true,

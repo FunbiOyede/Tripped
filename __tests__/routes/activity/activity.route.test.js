@@ -4,7 +4,6 @@ const supertest = require("supertest");
 const mongoose = require("mongoose");
 const activityModel = require("../../../data/model/Activity");
 const config = require("../../../config/index");
-const activityRepository = require("../../../data/repository/activity.respository");
 const userRepository = require("../../../data/repository/user.repository");
 const httpStatus = require("http-status-codes");
 const request = supertest(server.app);
@@ -34,13 +33,14 @@ describe("ACTIVITY SERVICES", () => {
    *
    */
   beforeAll(async () => {
-    await mongoose.connect(process.env.TEST_DB_URL, config.DB_CONFIG, (err) => {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-    });
-    await closeRedis();
+    setupDB();
+    // await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
+    //   if (err) {
+    //     console.error(err);
+    //     process.exit(1);
+    //   }
+    // });
+    // await closeRedis();
   });
 
   beforeEach(async () => {

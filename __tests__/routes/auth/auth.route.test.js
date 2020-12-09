@@ -18,13 +18,14 @@ const {
  *
  */
 beforeAll(async () => {
-  await mongoose.connect(process.env.TEST_DB_URL, config.DB_CONFIG, (err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
-  await closeRedis();
+  setupDB();
+  // await mongoose.connect(config.TEST_DB_URL, config.DB_CONFIG, (err) => {
+  //   if (err) {
+  //     console.error(err);
+  //     process.exit(1);
+  //   }
+  // });
+  // await closeRedis();
 });
 beforeEach(async () => {
   await userRepository.deleteAll();
