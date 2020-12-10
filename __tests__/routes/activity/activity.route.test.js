@@ -71,7 +71,7 @@ describe("ACTIVITY SERVICES", () => {
     done();
   });
 
-  describe("POST /activity", () => {
+  describe("activity", () => {
     it("should send an error if authorization header not present", async (done) => {
       const res = await headers(
         request.post("/activity").send(activityDataOne)

@@ -78,7 +78,7 @@ describe("TRIP SERVICES", () => {
     done();
   });
 
-  describe("POST /trip", () => {
+  describe("Trips", () => {
     it("should send an error if authorization header not present", async (done) => {
       const res = await headers(request.post("/trip").send(tripDataOne));
       expect(res.status).toBe(httpStatus.UNAUTHORIZED);

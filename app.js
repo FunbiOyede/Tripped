@@ -61,7 +61,7 @@ class App {
         logger.info(
           `mongodb connected in ${process.env.NODE_ENV} enviroment, starting API server..`
         );
-        this.closeServer = server.listen(this.PORT, () => {
+        this.closeServer = server.listen(this.PORT || process.env.PORT, () => {
           logger.info(
             `server is running on port ${3000} in ${process.env.NODE_ENV} mode`
           );

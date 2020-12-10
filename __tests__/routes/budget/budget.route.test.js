@@ -66,7 +66,7 @@ describe("BUDGET SERVICES", () => {
     done();
   });
 
-  describe("POST /budget", () => {
+  describe("budgets", () => {
     it("should send an error if authorization header not present", async (done) => {
       const res = await headers(request.post("/budget").send(budgetDataOne));
       expect(res.status).toBe(httpStatus.UNAUTHORIZED);
