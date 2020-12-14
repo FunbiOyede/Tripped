@@ -1,7 +1,9 @@
 const express = require("express"),
   cors = require("cors"),
+  multer = require("multer"),
   bodyParser = require("body-parser"),
   router = require("./api/routes/index");
+const photoRouter = require("./api/routes/photos.route");
 httpStatus = require("http-status-codes");
 (http = require("http")),
   (expressWinston = require("express-winston")),
@@ -19,6 +21,26 @@ httpStatus = require("http-status-codes");
 require("dotenv").config();
 require("./data/repository/cache");
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  }
+  cb(null, false);
+};
+
 class App {
   constructor() {
     this.app = express();
@@ -34,14 +56,20 @@ class App {
     this.app.use(expressWinston.logger(httpLogger()));
 
     this.app.get("/status", async (req, res) => {
+      console.log(config);
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
+
+    this.app.use(
+      multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+    );
 
     this.app.use(router);
     this.app.use(tripRouter);
 
     this.app.use(budgetRouter);
     this.app.use(activityRouter);
+    this.app.use(photoRouter);
     this.app.use(errors());
     this.app.use((req, res, next) => {
       next(new NotFoundError("Routes not Found"));

@@ -7,6 +7,7 @@
   "author": "Oyede Oluwafunbi <oyedetobi49@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.809.0",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "celebrate": "^13.0.3",
@@ -19,10 +20,12 @@
     "jest": "^26.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.6",
+    "multer": "^1.4.2",
     "node-fetch": "^2.6.1",
     "query-string": "^6.13.6",
     "redis": "^3.0.2",
     "supertest": "^6.0.1",
+    "uuid": "^8.3.2",
     "winston": "^3.3.3"
   },
   "scripts": {

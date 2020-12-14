@@ -14,4 +14,6 @@ module.exports = {
   GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
   ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   REFRESH_TOKEN: process.env.REFRESH_TOKEN,
+  S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+  S3_SECRET_KEY: process.env.S3_SECRET_KEY,
 };
