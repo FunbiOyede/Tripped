@@ -10,7 +10,7 @@ const axios = require("axios");
 // });
 router.get("/auth/google/callback", async (req, res, next) => {
   const { code } = req.query;
-  console.log(code);
+  // console.log(code);
   const { data } = await axios({
     url: `https://oauth2.googleapis.com/token`,
     method: "post",
@@ -30,6 +30,7 @@ router.get("/auth/google/callback", async (req, res, next) => {
       Authorization: `Bearer ${data.access_token}`,
     },
   });
+  console.log(payload);
 });
 
 router.post(

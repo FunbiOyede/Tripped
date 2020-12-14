@@ -58,11 +58,11 @@ REFRESH_TOKEN=trippedRefreshToken //whatever you like
 
 #### Test
 
-##### Run unit tests by running the following:
+- Run unit tests by running the following:
 
 ```
 # runs all tests with jest
 yarn test:unit
 ```
 
-### Deployment
+#### Deployment
