@@ -23,6 +23,7 @@ The codebase is [Nodejs](https://nodejs.org/en/),[Redis](https://redis.io/) and 
 - This project also uses a cache aside caching technique on the trips routes. For more information about caching techniques see [Caching Techniques](https://bluzelle.com/blog/things-you-should-know-about-database-caching#:~:text=Cache%20Aside,will%20retrieve%20the%20data%20directly.)
 - This project also uses open weather api to get weather data for specific locations. So head on to [Open weather](https://openweathermap.org/api) to get your api key.
 - Also Create an account with [MongoDB Atlas](https://cloud.mongodb.com/) using the FREE plan.
+- The project also make use of Amazon S3
 
 ### Getting Started
 

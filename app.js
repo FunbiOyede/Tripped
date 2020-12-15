@@ -21,25 +21,25 @@ httpStatus = require("http-status-codes");
 require("dotenv").config();
 require("./data/repository/cache");
 
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+// const fileStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + "-" + file.originalname);
+//   },
+// });
 
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
-  ) {
-    cb(null, true);
-  }
-  cb(null, false);
-};
+// const fileFilter = (req, file, cb) => {
+//   if (
+//     file.mimetype === "image/png" ||
+//     file.mimetype === "image/jpg" ||
+//     file.mimetype === "image/jpeg"
+//   ) {
+//     cb(null, true);
+//   }
+//   cb(null, false);
+// };
 
 class App {
   constructor() {
@@ -60,9 +60,9 @@ class App {
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
 
-    this.app.use(
-      multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
-    );
+    // this.app.use(
+    //   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+    // );
 
     this.app.use(router);
     this.app.use(tripRouter);

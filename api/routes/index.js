@@ -58,7 +58,7 @@ router.post(
       }),
     }),
   ],
-  auth.isAuthenticated,
+
   userController.login
 );
 router.get("/user", auth.isAuthenticated, userController.getUser);
