@@ -4,6 +4,7 @@ module.exports = {
   ACCESS_TOKEN: "trippedAcessToken",
   REFRESH_TOKEN: "trippedRefreshToken",
   REDIS_URL: process.env.REDIS_URL,
+  S3_BUCKET_NAME: "blah-blah-blah",
   DB_CONFIG: {
     useNewUrlParser: true,
     useCreateIndex: true,
