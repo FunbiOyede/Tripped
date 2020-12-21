@@ -31,8 +31,7 @@ class TripControllers extends BaseController {
       const result = await tripService.all(userId);
       super.reply(res, httpStatus.OK, "The list of trips", result);
     } catch (error) {
-      error.statusCode = httpStatus.BAD_REQUEST;
-      next(new BadRequestError(error));
+      next(error);
     }
   }
 
@@ -43,7 +42,7 @@ class TripControllers extends BaseController {
       super.reply(res, httpStatus.OK, "The list of trips", result);
     } catch (error) {
       error.statusCode = httpStatus.NOT_FOUND;
-      next(new NotFoundError(error));
+      next(error);
     }
   }
 

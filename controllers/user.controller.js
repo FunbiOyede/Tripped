@@ -51,7 +51,7 @@ class UserController extends BaseController {
       const user = await userService.authenticateUserByEmail(email);
       const accessToken = await jwt.generateAccessToken(user);
       const refreshToken = await jwt.generateRefreshToken(user);
-      super.reply(res, httpStatus.CREATED, "login successful", {
+      super.reply(res, httpStatus.OK, "login successful", {
         user,
         accessToken,
         refreshToken,

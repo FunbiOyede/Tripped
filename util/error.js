@@ -8,18 +8,30 @@ const ErrorType = {
   UNAUTHENTICATED: "UNAUTHENTICATED",
 };
 
+class ApiError extends Error {
+  constructor(type, message) {
+    super(type);
+  }
+}
+
+// class NotFoundError extends ApiError {
+//   constructor(message = "Not Found") {
+//     super(ErrorType.NOT_FOUND, message);
+//     this.statusCode = httpStatus.NOT_FOUND;
+//   }
+// }
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    (this.type = ErrorType.NOT_FOUND), (this.statusCode = httpStatus.NOT_FOUND);
+  }
+}
+
 class BadRequestError extends Error {
   constructor(error) {
     super(error.message);
     (this.type = ErrorType.BAD_REQUEST),
       (this.statusCode = httpStatus.BAD_REQUEST);
-  }
-}
-
-class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    (this.type = ErrorType.NOT_FOUND), (this.statusCode = httpStatus.NOT_FOUND);
   }
 }
 

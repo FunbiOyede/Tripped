@@ -1,5 +1,5 @@
 const tripRepository = require("../data/repository/trip.repository");
-const { TripNotFoundError, NotFoundError } = require("../util/error");
+const { NotFoundError } = require("../util/error");
 const { calculateDateDifference } = require("../util/index");
 
 class TripServices {

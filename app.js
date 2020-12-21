@@ -2,7 +2,7 @@ const express = require("express"),
   cors = require("cors"),
   multer = require("multer"),
   bodyParser = require("body-parser"),
-  router = require("./api/routes/index");
+  userRouter = require("./api/routes/user.route");
 const photoRouter = require("./api/routes/photos.route");
 httpStatus = require("http-status-codes");
 (http = require("http")),
@@ -56,7 +56,6 @@ class App {
     this.app.use(expressWinston.logger(httpLogger()));
 
     this.app.get("/status", async (req, res) => {
-      console.log(config);
       res.status(httpStatus.OK).json({ message: "Ready!, Up and running" });
     });
 
@@ -64,9 +63,8 @@ class App {
     //   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
     // );
 
-    this.app.use(router);
+    this.app.use(userRouter);
     this.app.use(tripRouter);
-
     this.app.use(budgetRouter);
     this.app.use(activityRouter);
     this.app.use(photoRouter);
