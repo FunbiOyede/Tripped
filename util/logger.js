@@ -1,4 +1,5 @@
 const winston = require("winston");
+const { Loggly } = require("winston-loggly-bulk");
 const { format, transports, createLogger } = winston;
 const { combine, timestamp, simple, json, colorize, label, printf } = format;
 const transport = [];
@@ -21,7 +22,15 @@ const options = {
   },
 };
 if (process.env.NODE_ENV === "production") {
-  transport.push(new transports.Console(options.console));
+  transport.push(
+    new winston.transports.Loggly({
+      token: "8610c375-465c-4201-988b-6c874ad25541",
+      subdomain: "funbi",
+      level: "error",
+      tags: ["tripped"],
+      json: true,
+    })
+  );
 } else if (process.env.NODE_ENV === "development") {
   transport.push(new transports.Console(options.console));
 } else {

@@ -2,6 +2,15 @@ const redis = require("redis");
 const { logger } = require("../../util/logger");
 const config = require("../../config/index");
 const client = redis.createClient(config.REDIS_URL);
+const redisAuth = config.REDIS_PRODUCTION_PASSWORD;
+
+if (process.env.NODE_ENV === "production") {
+  client.auth(redisAuth, function (err, response) {
+    if (err) {
+      throw err;
+    }
+  });
+}
 
 const connectRedis = () => {
   client.on("connect", function () {

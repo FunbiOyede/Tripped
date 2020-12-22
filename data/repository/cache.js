@@ -20,6 +20,7 @@ mongoose.Query.prototype.exec = async function () {
   // );
 
   const cachedValue = await client.get(this.cacheKey);
+
   if (cachedValue) {
     const doc = JSON.parse(cachedValue);
     return Array.isArray(doc)
