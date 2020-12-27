@@ -15,10 +15,7 @@ const Trip = new mongoose.Schema({
     index: true,
     default: false,
   },
-  imageUrl: {
-    type: String,
-    default: null,
-  },
+  imageKey: [String],
 });
 
 module.exports = mongoose.model("Trip", Trip);

@@ -81,15 +81,6 @@ class TripServices {
       throw error;
     }
   }
-
-  async uploadImages(id, imageUrl) {
-    try {
-      const trip = await tripRepository.uploadImages(id, imageUrl);
-      return trip;
-    } catch (error) {
-      throw error;
-    }
-  }
 }
 
 module.exports = new TripServices();

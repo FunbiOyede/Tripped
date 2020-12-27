@@ -100,17 +100,6 @@ class TripControllers extends BaseController {
     }
   }
 
-  async uploadImagesForTrips(req, res, next) {
-    const { id } = req.params;
-    const { location } = req.file;
-    try {
-      const trip = await tripService.uploadImages(id, location);
-      super.reply(res, httpStatus.OK, "The image was successfully added", trip);
-    } catch (error) {
-      next(error);
-    }
-  }
-
   async getWeather(req, res, next) {
     try {
       const { location } = req.query;

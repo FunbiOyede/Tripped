@@ -27,16 +27,6 @@ class TripRepository extends BaseRepository {
       throw error;
     }
   }
-
-  async uploadImages(id, url) {
-    try {
-      const doc = await this.model.findById(id);
-      doc.imageUrl = url;
-      return doc.save();
-    } catch (error) {
-      throw error;
-    }
-  }
 }
 
 module.exports = new TripRepository();

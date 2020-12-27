@@ -1,6 +1,5 @@
 const photoRouter = require("express").Router();
-const tripController = require("../../controllers/trip.controllers");
-
+const imageController = require("../../controllers/image.controller");
 const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
@@ -32,8 +31,10 @@ photoRouter.post(
   "/upload/photo/:id",
   auth.isAuthenticated,
   upload.single("image"),
-  tripController.uploadImagesForTrips
+  imageController.uploadImagesForTrips
 );
+
+photoRouter.delete("/photo/:id", imageController.deleteImagesForTrips);
 // photoRouter.post("/upload/photo", upload.single("image"), async (req, res) => {
 //   //requesting a signedUrl for uploading photos
 //   console.log(req.file);
