@@ -23,7 +23,6 @@ class ImageController extends BaseController {
   async deleteImagesForTrips(req, res, next) {
     const { id } = req.params;
     const { image_key } = req.query;
-
     let params = {
       Bucket: config.S3_BUCKET_NAME,
       Key: image_key,
