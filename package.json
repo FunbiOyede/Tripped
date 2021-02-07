@@ -2,7 +2,7 @@
   "name": "Tripped",
   "version": "1.0.0",
   "engines": {
-    "node": "12.16.0"
+    "node": "12."
   },
   "description": "An Api for managing  itineraries for holidays and vacations",
   "main": "index.js",
