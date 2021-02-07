@@ -65,4 +65,4 @@ check .env.example for required variables
 yarn test:unit
 ```
 
-#### Deployment
+#### Deployments
